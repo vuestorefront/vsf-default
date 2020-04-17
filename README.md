@@ -5,8 +5,7 @@ Vue Storefront Default theme (please consider vsf-capybara instead)
 
 ## The design
 
-The application is prepared to be fully customized in design through the theming system.
-With the current version we work on raw, basic template of typical eCommerce for a fashion industry.
+This theme is basic template of typical eCommerce for a fashion industry.
 In the project we used [Material Icons](https://github.com/google/material-design-icons).
 
 <img width="880" alt="Vue Storefront - Annimations in sidebar menu" src="https://user-images.githubusercontent.com/18116406/33559404-ed674bcc-d90c-11e7-864a-91e42d1c92cd.gif">
