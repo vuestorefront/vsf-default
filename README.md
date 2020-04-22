@@ -60,6 +60,12 @@ To be able to use new Default theme in your Vue Storefront installation, you nee
 
 1. That’s all! Now after opening your development server (http://localhost:3000 by default) you should see Vue Storefront with Default theme!  🎉
 
+## Troubleshooting
+After `git submodule add -b master git@github.com:DivanteLtd/vsf-default.git src/themes/default` you see message:
+`'src/themes/default' already exists in the index`
+
+That is shown because directory already exist or if you removed it then you need to remove it from git index `git rm --cached  src/themes/default`
+
 ## The screenshots
 
 <img width="880" alt="Vue Storefront - Annimations in the sidebar cart" src="https://user-images.githubusercontent.com/18116406/33559769-2840fb70-d90e-11e7-8f2b-298f35d1b412.gif">
