@@ -39,8 +39,6 @@
 import { isServer, onlineHelper } from '@vue-storefront/core/helpers'
 import LazyHydrate from 'vue-lazy-hydration'
 
-// Core pages
-import Home from '@vue-storefront/core/pages/Home'
 // Theme core components
 import ProductListing from 'theme/components/core/ProductListing'
 import HeadImage from 'theme/components/core/blocks/MainSlider/HeadImage'
@@ -48,11 +46,11 @@ import HeadImage from 'theme/components/core/blocks/MainSlider/HeadImage'
 import Onboard from 'theme/components/theme/blocks/Home/Onboard'
 import PromotedOffers from 'theme/components/theme/blocks/PromotedOffers/PromotedOffers'
 import TileLinks from 'theme/components/theme/blocks/TileLinks/TileLinks'
-import {Logger} from '@vue-storefront/core/lib/logger'
-import {mapGetters} from 'vuex'
+import { Logger } from '@vue-storefront/core/lib/logger'
+import { mapGetters } from 'vuex'
 import config from 'config'
-import {registerModule} from '@vue-storefront/core/lib/modules'
-import {RecentlyViewedModule} from '@vue-storefront/core/modules/recently-viewed'
+import { registerModule } from '@vue-storefront/core/lib/modules'
+import { RecentlyViewedModule } from '@vue-storefront/core/modules/recently-viewed'
 
 export default {
   data () {
@@ -60,7 +58,6 @@ export default {
       loading: true
     }
   },
-  mixins: [Home],
   components: {
     HeadImage,
     Onboard,
@@ -106,8 +103,9 @@ export default {
       localStorage.removeItem('redirect')
     }
   },
-  async asyncData ({ store, route }) { // this is for SSR purposes to prefetch data
-    Logger.info('Calling asyncData in Home (theme)')()
+  async asyncData ({ store, route, context }) { // this is for SSR purposes to prefetch data
+    if (context) context.output.cacheTags.add(`home`)
+    Logger.info('Calling asyncData in Home Page (core)')()
 
     await Promise.all([
       store.dispatch('homepage/fetchNewCollection'),
@@ -124,6 +122,12 @@ export default {
       )
     } else {
       next()
+    }
+  },
+  metaInfo () {
+    return {
+      title: this.$route.meta.title || this.$i18n.t('Home Page'),
+      meta: this.$route.meta.description ? [{ vmid: 'description', name: 'description', content: this.$route.meta.description }] : []
     }
   }
 }
