@@ -30,7 +30,7 @@
       </div>
     </div>
     <div class="col-xs flex py15 align-right">
-      <div>
+      <div v-if="product.price_incl_tax">
         <span class="price-special" v-if="product.special_price">{{ product.price_incl_tax | price(storeView) }}</span>&nbsp;
         <span class="price-original" v-if="product.special_price">{{ product.original_price_incl_tax | price(storeView) }}</span>
 
