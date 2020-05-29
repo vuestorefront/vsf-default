@@ -16,7 +16,7 @@
     </h4>
     <div v-if="!productsInWishlist.length" class="ml30">
       {{ $t("Don't hesitate and") }}
-      <router-link :to="localizedRoute('/')">
+      <router-link :to="localizedRoute('/')" @click.native="closeWishlist">
         {{ $t('browse our catalog') }}
       </router-link>
       {{ $t('to find something beautiful for You!') }}
