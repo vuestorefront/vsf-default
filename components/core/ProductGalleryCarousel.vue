@@ -103,6 +103,7 @@ export default {
   },
   methods: {
     navigate (index) {
+      if (index < 0) return
       this.currentPage = index
     },
     async selectVariant (configuration) {
@@ -115,7 +116,7 @@ export default {
         if (option) {
           let index = this.gallery.findIndex(
             obj => obj.id && Object.entries(obj.id).toString() === Object.entries(option).toString(), option)
-          if (index < 0) index = this.gallery.findIndex(obj => obj.id && obj.id.color === option.color)
+          if (index < 0) index = this.gallery.findIndex(obj => String(obj.id && obj.id.color) === String(option.color))
           this.navigate(index)
         }
       }

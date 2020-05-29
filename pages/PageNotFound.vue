@@ -31,7 +31,7 @@
             {{ $t('to find product you were looking for.') }}
           </p>
         </div>
-        <section class="container">
+        <section class="container" v-if="ourBestsellersCollection.length">
           <header class="col-md-12 pt40">
             <h3 class="align-center">
               {{ $t('See our bestsellers') }}
