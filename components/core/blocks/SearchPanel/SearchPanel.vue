@@ -117,11 +117,11 @@ export default {
         .map(p => p.category)
         .flat()
 
-      const discinctCategories = Array.from(
+      const distinctCategories = Array.from(
         new Set(categories.map(c => c.category_id))
       ).map(catId => categories.find(c => c.category_id === catId))
 
-      return discinctCategories
+      return distinctCategories
     },
     getNoResultsMessage () {
       let msg = ''
