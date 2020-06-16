@@ -64,7 +64,7 @@ To be able to use new Default theme in your Vue Storefront installation, you nee
 After `git submodule add -b master git@github.com:DivanteLtd/vsf-default.git src/themes/default` you see message:
 `'src/themes/default' already exists in the index`
 
-That is shown because directory already exist or if you removed it then you need to remove it from git index `git rm --cached  src/themes/default`
+That is shown because directory already exist or if you removed it then you need to remove it from git index `git rm -r --cached  src/themes/default`
 
 ## The screenshots
 
