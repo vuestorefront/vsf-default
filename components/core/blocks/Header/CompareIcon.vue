@@ -1,5 +1,10 @@
 <template>
-  <router-link :to="localizedRoute('/compare')" class="compare-icon no-underline inline-flex" v-if="isActive" data-testid="compare-list-icon">
+  <router-link
+    :to="localizedRoute('/compare')"
+    class="compare-icon no-underline inline-flex"
+    v-if="isCompareEnabled && isActive"
+    data-testid="compare-list-icon"
+  >
     <i class="material-icons">compare</i>
     <span
       class="compare-count absolute flex center-xs middle-xs border-box py0 px2 h6 lh16 weight-700 cl-white bg-cl-silver"
@@ -12,15 +17,16 @@
 </template>
 
 <script>
-import CompareIcon from '@vue-storefront/core/compatibility/components/blocks/Header/CompareIcon'
-import { mapGetters } from 'vuex'
+  import CompareIcon from '@vue-storefront/core/compatibility/components/blocks/Header/CompareIcon'
+  import { CompareStatus } from '@vue-storefront/core/modules/compare/components/CompareStatus'
+  import { mapGetters } from 'vuex'
 
-export default {
-  mixins: [CompareIcon],
-  computed: {
-    ...mapGetters('compare', ['getCompareProductsCount'])
+  export default {
+    mixins: [CompareIcon, CompareStatus],
+    computed: {
+      ...mapGetters('compare', ['getCompareProductsCount'])
+    }
   }
-}
 </script>
 
 <style scoped>
