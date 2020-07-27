@@ -175,9 +175,16 @@
             class="col-xs-12 mb10"
             type="text"
             name="phone-number"
-            :placeholder="$t('Phone Number')"
+            :placeholder="`${$t('Phone Number')} *`"
             v-model.trim="shipping.phoneNumber"
+            :validations="[
+              {
+                condition: $v.shipping.phoneNumber.$error && !$v.shipping.phoneNumber.required,
+                text: $t('Field is required')
+              }
+            ]"
             autocomplete="tel"
+            @blur="$v.shipping.phoneNumber.$touch()"
           />
 
           <h4 class="col-xs-12">
@@ -303,6 +310,9 @@ export default {
         unicodeAlpha
       },
       country: {
+        required
+      },
+      phoneNumber: {
         required
       },
       streetAddress: {
