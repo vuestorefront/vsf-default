@@ -181,6 +181,10 @@
               {
                 condition: $v.shipping.phoneNumber.$error && !$v.shipping.phoneNumber.required,
                 text: $t('Field is required')
+              },
+              {
+                condition: !!shipping.phoneNumber && $v.shipping.phoneNumber.$error && !$v.shipping.phoneNumber.phoneNum,
+                text: $t('Please provide valid phone number')
               }
             ]"
             autocomplete="tel"
@@ -266,7 +270,7 @@
 
 <script>
 import { required, minLength } from 'vuelidate/lib/validators'
-import { unicodeAlpha, unicodeAlphaNum } from '@vue-storefront/core/helpers/validators'
+import { unicodeAlpha, unicodeAlphaNum, phoneNum } from '@vue-storefront/core/helpers/validators'
 import { Shipping } from '@vue-storefront/core/modules/checkout/components/Shipping'
 import { currentStoreView } from '@vue-storefront/core/lib/multistore'
 
@@ -313,7 +317,8 @@ export default {
         required
       },
       phoneNumber: {
-        required
+        required,
+        phoneNum
       },
       streetAddress: {
         required,
