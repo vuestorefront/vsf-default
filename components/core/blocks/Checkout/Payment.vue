@@ -190,6 +190,10 @@
               {
                 condition: $v.payment.phoneNumber.$error && !$v.payment.phoneNumber.required,
                 text: $t('Field is required')
+              },
+              {
+                condition: !!payment.phoneNumber && $v.payment.phoneNumber.$error && !$v.payment.phoneNumber.phoneNum,
+                text: $t('Please provide valid phone number')
               }
             ]"
             autocomplete="tel"
@@ -326,7 +330,7 @@
 
 <script>
 import { required, minLength } from 'vuelidate/lib/validators'
-import { unicodeAlpha, unicodeAlphaNum } from '@vue-storefront/core/helpers/validators'
+import { unicodeAlpha, unicodeAlphaNum, phoneNum } from '@vue-storefront/core/helpers/validators'
 import { Payment } from '@vue-storefront/core/modules/checkout/components/Payment'
 
 import BaseCheckbox from 'theme/components/core/blocks/Form/BaseCheckbox'
@@ -371,7 +375,8 @@ export default {
             required
           },
           phoneNumber: {
-            required
+            required,
+            phoneNum
           },
           streetAddress: {
             required,
@@ -419,7 +424,8 @@ export default {
             required
           },
           phoneNumber: {
-            required
+            required,
+            phoneNum
           },
           streetAddress: {
             required,
