@@ -8,7 +8,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [1.12.2] - UNRELEASED
 
 ### Added
-### Changed / Improved
-
 - Added phone number validation in checkout block (#30)
+
+### Changed / Improved
+- Fixed closing sidebar after clicking on go to checkout button (#28) 
+
+
 
