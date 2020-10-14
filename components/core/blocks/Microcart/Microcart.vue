@@ -201,9 +201,6 @@ export default {
       this.$store.dispatch('cart/removeCoupon')
       this.addCouponPressed = false
     },
-    toggleMicrocart () {
-      this.$store.dispatch('ui/toggleMicrocart')
-    },
     async setCoupon () {
       const couponApplied = await this.applyCoupon(this.couponCode)
       this.addCouponPressed = false
@@ -217,7 +214,7 @@ export default {
       }
     },
     closeMicrocartExtend () {
-      this.toggleMicrocart()
+      this.$store.commit('ui/setMicrocart', false)
       this.$store.commit('ui/setSidebar', false)
       this.addCouponPressed = false
     },
@@ -239,7 +236,7 @@ export default {
         hasNoTimeout: true
       })
     }
-  }
+  },
 }
 </script>
 
