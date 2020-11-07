@@ -3,6 +3,7 @@ import App from './App.vue'
 import routes from './router'
 import Vue from 'vue'
 import VueProgressBar from 'vue-progressbar'
+import VueLazyload from 'vue-lazyload'
 import '@vue-storefront/core/lib/passive-listeners'
 import { once } from '@vue-storefront/core/helpers'
 import { module as cartModule } from './store/cart'
@@ -15,6 +16,7 @@ import { StorageManager } from '@vue-storefront/core/lib/storage-manager'
 
 once('__VUE_EXTEND_DROPPOINT_VPB__', () => {
   Vue.use(VueProgressBar)
+  Vue.use(VueLazyload, { attempt: 2, preLoad: 1.5 })
 })
 
 const themeEntry = App
