@@ -42,7 +42,12 @@
         <div class="col-md-3 start-xs category-filters">
           <sidebar :filters="getAvailableFilters" @changeFilter="changeFilter" />
         </div>
-        <div class="col-md-3 start-xs mobile-filters" v-show="mobileFilters">
+        <div
+          class="col-md-3 start-xs mobile-filters"
+          v-show="mobileFilters"
+          ref="mobileFilters"
+          :style="mobileFilters ? { 'max-height': `${dynamicComponentHeight}px` } : {}"
+        >
           <div class="close-container absolute w-100">
             <i class="material-icons p15 close cl-accent" @click="closeFilters">close</i>
           </div>
@@ -95,6 +100,8 @@ import rootStore from '@vue-storefront/core/store';
 import { catalogHooksExecutors } from '@vue-storefront/core/modules/catalog-next/hooks'
 import { localizedRoute, currentStoreView } from '@vue-storefront/core/lib/multistore'
 import { htmlDecode } from '@vue-storefront/core/filters'
+import { disableBodyScroll, clearAllBodyScrollLocks } from 'body-scroll-lock'
+import dynamicComponentHeight from 'theme/mixins/dynamicComponentHeight';
 
 const THEME_PAGE_SIZE = 50
 
@@ -124,13 +131,19 @@ export default {
     SortBy,
     Columns
   },
-  mixins: [onBottomScroll],
+  mixins: [onBottomScroll, dynamicComponentHeight],
   data () {
     return {
       mobileFilters: false,
       defaultColumn: 3,
       loadingProducts: false,
       loading: true
+    }
+  },
+  watch: {
+    mobileFilters (value) {
+      if (value) disableBodyScroll(this.$refs.mobileFilters)
+      else clearAllBodyScrollLocks()
     }
   },
   computed: {
