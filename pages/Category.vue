@@ -42,7 +42,12 @@
         <div class="col-md-3 start-xs category-filters">
           <sidebar :filters="getAvailableFilters" @changeFilter="changeFilter" />
         </div>
-        <div class="col-md-3 start-xs mobile-filters" v-show="mobileFilters">
+        <div
+          class="col-md-3 start-xs mobile-filters"
+          v-show="mobileFilters"
+          ref="mobileFilters"
+          :style="mobileFilters ? { 'max-height': `${windowHelper}px` } : {}"
+        >
           <div class="close-container absolute w-100">
             <i class="material-icons p15 close cl-accent" @click="closeFilters">close</i>
           </div>
@@ -85,6 +90,7 @@ import Breadcrumbs from '../components/core/Breadcrumbs.vue'
 import SortBy from '../components/core/SortBy.vue'
 import { isServer } from '@vue-storefront/core/helpers'
 import { Logger } from '@vue-storefront/core/lib/logger'
+import { windowHelper } from 'theme/helpers'
 import { getSearchOptionsFromRouteParams } from '@vue-storefront/core/modules/catalog-next/helpers/categoryHelpers'
 import config from 'config'
 import Columns from '../components/core/Columns.vue'
@@ -95,6 +101,7 @@ import rootStore from '@vue-storefront/core/store';
 import { catalogHooksExecutors } from '@vue-storefront/core/modules/catalog-next/hooks'
 import { localizedRoute, currentStoreView } from '@vue-storefront/core/lib/multistore'
 import { htmlDecode } from '@vue-storefront/core/filters'
+import { disableBodyScroll, clearAllBodyScrollLocks } from 'body-scroll-lock'
 
 const THEME_PAGE_SIZE = 50
 
@@ -133,6 +140,12 @@ export default {
       loading: true
     }
   },
+  watch: {
+    mobileFilters (value) {
+      if (value) disableBodyScroll(this.$refs.mobileFilters)
+      else clearAllBodyScrollLocks()
+    }
+  },
   computed: {
     ...mapGetters({
       getCurrentSearchQuery: 'category-next/getCurrentSearchQuery',
@@ -146,6 +159,9 @@ export default {
     },
     isCategoryEmpty () {
       return this.getCategoryProductsTotal === 0
+    },
+    windowHelper () {
+      return windowHelper.height
     }
   },
   async asyncData ({ store, route, context }) { // this is for SSR purposes to prefetch data - and it's always executed before parent component methods

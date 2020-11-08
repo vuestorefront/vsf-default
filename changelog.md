@@ -13,6 +13,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [1.12.2] - UNRELEASED
 
 ### Added
+- Added window height helper for scrolling on iOS when filters on Category Page are open (#25)
 - Added phone number validation in checkout block (#30)
 
 ### Changed / Improved
