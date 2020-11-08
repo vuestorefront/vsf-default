@@ -46,7 +46,7 @@
           class="col-md-3 start-xs mobile-filters"
           v-show="mobileFilters"
           ref="mobileFilters"
-          :style="mobileFilters ? { 'max-height': `${dynamicComponentHeight}px` } : {}"
+          :style="mobileFilters ? { 'max-height': `${windowHelper}px` } : {}"
         >
           <div class="close-container absolute w-100">
             <i class="material-icons p15 close cl-accent" @click="closeFilters">close</i>
@@ -90,6 +90,7 @@ import Breadcrumbs from '../components/core/Breadcrumbs.vue'
 import SortBy from '../components/core/SortBy.vue'
 import { isServer } from '@vue-storefront/core/helpers'
 import { Logger } from '@vue-storefront/core/lib/logger'
+import { windowHelper } from 'theme/helpers'
 import { getSearchOptionsFromRouteParams } from '@vue-storefront/core/modules/catalog-next/helpers/categoryHelpers'
 import config from 'config'
 import Columns from '../components/core/Columns.vue'
@@ -101,7 +102,6 @@ import { catalogHooksExecutors } from '@vue-storefront/core/modules/catalog-next
 import { localizedRoute, currentStoreView } from '@vue-storefront/core/lib/multistore'
 import { htmlDecode } from '@vue-storefront/core/filters'
 import { disableBodyScroll, clearAllBodyScrollLocks } from 'body-scroll-lock'
-import dynamicComponentHeight from 'theme/mixins/dynamicComponentHeight';
 
 const THEME_PAGE_SIZE = 50
 
@@ -131,7 +131,7 @@ export default {
     SortBy,
     Columns
   },
-  mixins: [onBottomScroll, dynamicComponentHeight],
+  mixins: [onBottomScroll],
   data () {
     return {
       mobileFilters: false,
@@ -159,6 +159,9 @@ export default {
     },
     isCategoryEmpty () {
       return this.getCategoryProductsTotal === 0
+    },
+    windowHelper () {
+      return windowHelper.height
     }
   },
   async asyncData ({ store, route, context }) { // this is for SSR purposes to prefetch data - and it's always executed before parent component methods
