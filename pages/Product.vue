@@ -404,8 +404,8 @@ export default {
           qty: this.getCurrentProduct.qty
         })
 
-        this.manageQuantity = res.isManageStock
-        this.maxQuantity = res.isManageStock ? res.qty : null
+        this.manageQuantity = Boolean(res.isManageStock)
+        this.maxQuantity = this.manageQuantity ? res.qty : null
       } finally {
         this.isStockInfoLoading = false
       }
