@@ -2,6 +2,8 @@
   <div
     class="searchpanel fixed mw-100 bg-cl-primary cl-accent"
     data-testid="searchPanel"
+    ref="searchPanel"
+    :style="{ 'max-height': `${windowHelper}px` }"
   >
     <div class="close-icon-row">
       <i
@@ -84,6 +86,7 @@ import VueOfflineMixin from 'vue-offline/mixin'
 import CategoryPanel from 'theme/components/core/blocks/Category/CategoryPanel'
 import { minLength } from 'vuelidate/lib/validators'
 import { disableBodyScroll, clearAllBodyScrollLocks } from 'body-scroll-lock'
+import { windowHelper } from 'theme/helpers'
 
 export default {
   components: {
@@ -131,20 +134,26 @@ export default {
         msg = 'No results were found.'
       }
       return msg
+    },
+    windowHelper () {
+      return windowHelper.height
     }
   },
   watch: {
     categories () {
       this.selectedCategoryIds = []
+    },
+    isOpen (state) {
+      if (state) {
+        this.$nextTick(() => {
+          disableBodyScroll(this.$refs.searchPanel)
+        })
+      } else clearAllBodyScrollLocks()
     }
   },
   mounted () {
     // add autofocus to search input field
     this.$refs.search.focus()
-    disableBodyScroll(this.$el)
-  },
-  destroyed () {
-    clearAllBodyScrollLocks()
   }
 }
 </script>
@@ -156,6 +165,7 @@ export default {
 
 .searchpanel {
   height: 100vh;
+  min-height: 100%;
   width: 800px;
   top: 0;
   right: 0;
