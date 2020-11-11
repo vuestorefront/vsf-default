@@ -80,6 +80,9 @@ export default {
     @media (max-width: 770px) {
       .sort-by {
         width: 100%;
+        select {
+          font-size: 16px;
+        }
       }
     }
 </style>
