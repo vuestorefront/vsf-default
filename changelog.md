@@ -17,6 +17,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Added window height helper for scrolling on iOS when filters on Category Page are open (#25)
 - Added phone number validation in checkout block (#30)
 - Loseless optimization of some assets
+- Removed legacy parts of homepage slider
 
 ### Changed / Improved
 - Fixed closing sidebar after clicking on go to checkout button (#28)
