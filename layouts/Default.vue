@@ -26,11 +26,26 @@
         @close="$store.commit('ui/setWishlist')"
       />
       <slot />
-      <main-footer />
-      <notification />
-      <sign-up />
-      <cookie-notification />
-      <offline-badge />
+      <lazy-hydrate when-visible>
+        <main-footer />
+      </lazy-hydrate>
+
+      <lazy-hydrate when-visible>
+        <notification />
+      </lazy-hydrate>
+
+      <lazy-hydrate when-idle>
+        <sign-up />
+      </lazy-hydrate>
+
+      <lazy-hydrate when-idle>
+        <cookie-notification />
+      </lazy-hydrate>
+
+      <lazy-hydrate when-idle>
+        <offline-badge />
+      </lazy-hydrate>
+      
       <order-confirmation :orders-data="ordersData" v-if="loadOrderConfirmation" />
     </div>
     <vue-progress-bar />
@@ -51,7 +66,8 @@ import OfflineBadge from 'theme/components/core/OfflineBadge.vue'
 import { isServer } from '@vue-storefront/core/helpers'
 import Head from 'theme/head'
 import config from 'config'
-import { supportWebp } from 'src/themes/vsf-default/helpers'
+import { supportWebp } from 'theme/helpers'
+import LazyHydrate from 'vue-lazy-hydration'
 
 const SidebarMenu = () => import(/* webpackPreload: true */ /* webpackChunkName: "vsf-sidebar-menu" */ 'theme/components/core/blocks/SidebarMenu/SidebarMenu.vue')
 const Microcart = () => import(/* webpackPreload: true */ /* webpackChunkName: "vsf-microcart" */ 'theme/components/core/blocks/Microcart/Microcart.vue')
@@ -126,7 +142,8 @@ export default {
     CookieNotification,
     OfflineBadge,
     OrderConfirmation,
-    AsyncSidebar
+    AsyncSidebar,
+    LazyHydrate
   }
 }
 </script>

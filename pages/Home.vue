@@ -1,7 +1,6 @@
 <template>
   <div id="home">
     <head-image />
-
     <promoted-offers />
 
     <section class="new-collection container px15">
@@ -28,9 +27,10 @@
           </h2>
         </header>
       </div>
-      <tile-links />
+      <lazy-hydrate when-idle>
+        <tile-links />
+      </lazy-hydrate>
     </section>
-    <Onboard />
   </div>
 </template>
 
@@ -43,7 +43,6 @@ import LazyHydrate from 'vue-lazy-hydration'
 import ProductListing from 'theme/components/core/ProductListing'
 import HeadImage from 'theme/components/core/blocks/MainSlider/HeadImage'
 // Theme local components
-import Onboard from 'theme/components/theme/blocks/Home/Onboard'
 import PromotedOffers from 'theme/components/theme/blocks/PromotedOffers/PromotedOffers'
 import TileLinks from 'theme/components/theme/blocks/TileLinks/TileLinks'
 import { Logger } from '@vue-storefront/core/lib/logger'
@@ -56,7 +55,6 @@ import createLazyVisibility from '@vue-storefront/core/mixins/createLazyVisibili
 export default {
   components: {
     HeadImage,
-    Onboard,
     ProductListing,
     PromotedOffers,
     TileLinks,
@@ -91,7 +89,6 @@ export default {
     if (this.$store.state.__DEMO_MODE__) {
       const onboardingClaim = await this.$store.dispatch('claims/check', { claimCode: 'onboardingAccepted' })
       if (!onboardingClaim) { // show onboarding info
-        this.$bus.$emit('modal-toggle', 'modal-onboard')
         this.$store.dispatch('claims/set', { claimCode: 'onboardingAccepted', value: true })
       }
     }
