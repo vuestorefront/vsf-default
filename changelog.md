@@ -25,6 +25,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Using WebP on homepage if browser supports it
 - Get rid of Onboard component in home page
 - More lazy hydration in layout and home
+- Google Fonts locally hosted (#54)
 
 ### Changed / Improved
 - Fixed closing sidebar after clicking on go to checkout button (#28)
