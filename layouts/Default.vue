@@ -71,7 +71,7 @@ import OfflineBadge from 'theme/components/core/OfflineBadge.vue'
 import { isServer } from '@vue-storefront/core/helpers'
 import Head from 'theme/head'
 import config from 'config'
-import { supportWebp } from 'src/themes/vsf-default/helpers'
+import { supportWebp } from 'theme/helpers'
 import LazyHydrate from 'vue-lazy-hydration'
 
 const SidebarMenu = () => import(/* webpackPreload: true */ /* webpackChunkName: "vsf-sidebar-menu" */ 'theme/components/core/blocks/SidebarMenu/SidebarMenu.vue')
