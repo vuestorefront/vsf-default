@@ -1,8 +1,8 @@
 <template>
   <section class="head-image w-100 bg-cl-th-accent cl-white">
-    <div 
+    <div
       class="container w-100 h-100 cl-black"
-      v-lazy:background-image="currentImage.image[supportsWebp ? 'webp' : 'fallback']"
+      :style="{backgroundImage: `url('${currentImage.image[supportsWebp ? 'webp' : 'fallback']}')`}"
       v-if="currentImage"
     >
       <div class="head-image-content">
