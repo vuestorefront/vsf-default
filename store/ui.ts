@@ -15,7 +15,7 @@ export const uiStore = {
       depth: false,
       path: []
     },
-    supportsWebp: false
+    supportsWebp: true
   },
   mutations: {
     setCheckoutMode (state, action) {
