@@ -2,10 +2,9 @@
   <div id="home">
     <head-image />
 
-    <lazy-hydrate when-idle v-if="isLazyHydrateEnabled">
+    <lazy-hydrate when-idle>
       <promoted-offers />
     </lazy-hydrate>
-    <promoted-offers v-else/>
 
     <section class="new-collection container px15">
       <div>
@@ -31,10 +30,9 @@
           </h2>
         </header>
       </div>
-      <lazy-hydrate when-idle v-if="isLazyHydrateEnabled">
+      <lazy-hydrate when-idle>
         <tile-links />
       </lazy-hydrate>
-      <tile-links v-else/>
     </section>
   </div>
 </template>

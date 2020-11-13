@@ -26,30 +26,25 @@
         @close="$store.commit('ui/setWishlist')"
       />
       <slot />
-      <lazy-hydrate when-visible v-if="isLazyHydrateEnabled.footer">
+      <lazy-hydrate when-visible>
         <main-footer />
       </lazy-hydrate>
-      <main-footer v-else/>
 
-      <lazy-hydrate when-visible v-if="isLazyHydrateEnabled.notification">
+      <lazy-hydrate when-visible>
         <notification />
       </lazy-hydrate>
-      <notification v-else/>
 
-      <lazy-hydrate when-idle v-if="isLazyHydrateEnabled.signUp">
+      <lazy-hydrate when-idle>
         <sign-up />
       </lazy-hydrate>
-      <sign-up v-else/>
 
-      <lazy-hydrate when-idle v-if="isLazyHydrateEnabled.cookieNotification">
+      <lazy-hydrate when-idle>
         <cookie-notification />
       </lazy-hydrate>
-      <cookie-notification v-else/>
 
-      <lazy-hydrate when-idle v-if="isLazyHydrateEnabled.offlineBadge">
+      <lazy-hydrate when-idle>
         <offline-badge />
       </lazy-hydrate>
-      <offline-badge v-else/>
       
       <order-confirmation :orders-data="ordersData" v-if="loadOrderConfirmation" />
     </div>
@@ -98,27 +93,7 @@ export default {
       isSidebarOpen: state => state.ui.sidebar,
       isMicrocartOpen: state => state.ui.microcart,
       isWishlistOpen: state => state.ui.wishlist
-    }),
-    isLazyHydrateEnabled () {
-      const hydrateParts = {};
-      config.ssr.lazyHydrateFor.map(
-        field => {
-          if (field === 'layout.footer') {
-            hydrateParts.footer = true
-          } else if (field === 'layout.sign-up') {
-            hydrateParts.signUp = true
-          } else if (field === 'layout.notification') {
-            hydrateParts.notification = true
-          } else if (field === 'layout.cookie-notification') {
-            hydrateParts.cookieNotification = true
-          } else if (field === 'layout.offline-badge') {
-            hydrateParts.offlineBadge = true
-          }
-        }
-      )
-
-      return hydrateParts;
-    }
+    })
   },
   methods: {
     onOrderConfirmation (payload) {
