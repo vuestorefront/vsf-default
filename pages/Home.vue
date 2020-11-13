@@ -1,10 +1,7 @@
 <template>
   <div id="home">
     <head-image />
-
-    <lazy-hydrate when-idle>
-      <promoted-offers />
-    </lazy-hydrate>
+    <promoted-offers />
 
     <section class="new-collection container px15">
       <div>
