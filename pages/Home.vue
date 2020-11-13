@@ -12,8 +12,8 @@
           </h2>
         </header>
       </div>
-      <div class="row center-xs">
-        <lazy-hydrate :trigger-hydration="!loading" v-if="isLazyHydrateEnabled">
+      <div class="row center-xs" v-observe-visibility="newCollectionLazyVisibility(fetchNewCollection)">
+        <lazy-hydrate :trigger-hydration="newCollectionLoaded" v-if="isLazyHydrateEnabled">
           <product-listing columns="4" :products="getEverythingNewCollection" />
         </lazy-hydrate>
         <product-listing v-else columns="4" :products="getEverythingNewCollection" />
@@ -47,17 +47,13 @@ import Onboard from 'theme/components/theme/blocks/Home/Onboard'
 import PromotedOffers from 'theme/components/theme/blocks/PromotedOffers/PromotedOffers'
 import TileLinks from 'theme/components/theme/blocks/TileLinks/TileLinks'
 import { Logger } from '@vue-storefront/core/lib/logger'
-import { mapGetters } from 'vuex'
+import { mapGetters, mapActions } from 'vuex'
 import config from 'config'
 import { registerModule } from '@vue-storefront/core/lib/modules'
 import { RecentlyViewedModule } from '@vue-storefront/core/modules/recently-viewed'
+import createLazyVisibility from '@vue-storefront/core/mixins/createLazyVisibility'
 
 export default {
-  data () {
-    return {
-      loading: true
-    }
-  },
   components: {
     HeadImage,
     Onboard,
@@ -66,6 +62,7 @@ export default {
     TileLinks,
     LazyHydrate
   },
+  mixins: [createLazyVisibility({ scope: 'newCollection' })],
   computed: {
     ...mapGetters('user', ['isLoggedIn']),
     ...mapGetters('homepage', ['getEverythingNewCollection']),
@@ -79,7 +76,13 @@ export default {
       return config.ssr.lazyHydrateFor.some(
         field => ['homepage', 'homepage.new_collection'].includes(field)
       )
+    },
+    newCollectionLoaded () {
+      return this.newCollectionLazyVisibilityMetadata.loaded
     }
+  },
+  methods: {
+    ...mapActions('homepage', ['fetchNewCollection'])
   },
   beforeCreate () {
     registerModule(RecentlyViewedModule)
@@ -112,17 +115,6 @@ export default {
       store.dispatch('promoted/updateHeadImage'),
       store.dispatch('promoted/updatePromotedOffers')
     ])
-  },
-  beforeRouteEnter (to, from, next) {
-    if (!isServer && !from.name) { // Loading products to cache on SSR render
-      next(vm =>
-        vm.$store.dispatch('homepage/fetchNewCollection').then(res => {
-          vm.loading = false
-        })
-      )
-    } else {
-      next()
-    }
   },
   metaInfo () {
     return {
