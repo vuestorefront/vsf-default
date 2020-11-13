@@ -3,7 +3,10 @@
     {
       "title": "Lässige Büro",
       "subtitle": "Kollektion",
-      "image": "/assets/ban1.jpg",
+      "image": {
+        "webp": "/assets/ban1.webp",
+        "fallback": "/assets/ban1.jpg"
+      },
       "link": "/women/frauen-20"
     }
   ],
@@ -11,13 +14,19 @@
     {
       "title": "Glänzen Sie mit",
       "subtitle": "Accessoires",
-      "image": "/assets/ban2.jpg",
+      "image": {
+        "webp": "/assets/ban2.webp",
+        "fallback": "/assets/ban2.jpg"
+      },
       "link": "/men/herren-11"
     },
     {
       "title": "Der Frühling kommt",
       "subtitle": "Hüte",
-      "image": "/assets/ban3.jpg",
+      "image": {
+        "webp": "/assets/ban3.webp",
+        "fallback": "/assets/ban3.jpg"
+      },
       "link": "/gear/gerat-3"
     }
   ],
@@ -25,7 +34,10 @@
     {
       "title": "Der Frühling kommt",
       "subtitle": "Hüte",
-      "image": "/assets/ban3.jpg",
+      "image": {
+        "webp": "/assets/ban3.webp",
+        "fallback": "/assets/ban3.jpg"
+      },
       "link": "/gear/gerat-3"
     }
   ]

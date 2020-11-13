@@ -14,7 +14,8 @@ export const uiStore = {
     submenu: {
       depth: false,
       path: []
-    }
+    },
+    supportsWebp: true
   },
   mutations: {
     setCheckoutMode (state, action) {
@@ -54,6 +55,9 @@ export const uiStore = {
     },
     setAuthElem (state, action) {
       state.authElem = action
+    },
+    setSupportsWebp (state, stance) {
+      state.supportsWebp = stance
     }
   },
   actions: {

@@ -1,6 +1,10 @@
 <template>
   <section class="head-image w-100 bg-cl-th-accent cl-white">
-    <div class="container w-100 h-100 cl-black" v-lazy:background-image="currentImage.image" v-if="currentImage">
+    <div 
+      class="container w-100 h-100 cl-black"
+      v-lazy:background-image="currentImage.image[supportsWebp ? 'webp' : 'fallback']"
+      v-if="currentImage"
+    >
       <div class="head-image-content">
         <h1 class="title" data-testid="mainSliderTitle">
           {{ currentImage.title }}
@@ -22,21 +26,16 @@
 </template>
 
 <script>
-// import ButtonOutline from 'theme/components/theme/ButtonOutline'
 import { mapGetters } from 'vuex'
 
 export default {
-  components: {
-    // ButtonOutline
-  },
-  data () {
-    return {
-    }
-  },
   computed: {
     ...mapGetters({
       currentImage: 'promoted/getHeadImage'
-    })
+    }),
+    supportsWebp () {
+      return this.$store.state.ui.supportsWebp
+    }
   }
 }
 </script>
