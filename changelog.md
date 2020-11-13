@@ -19,6 +19,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Loseless optimization of some assets
 - Removed legacy parts of homepage slider
 - Preconnect for pwacompat
+- Using WebP on homepage if browser supports it
 
 ### Changed / Improved
 - Fixed closing sidebar after clicking on go to checkout button (#28)

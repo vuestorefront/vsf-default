@@ -51,6 +51,7 @@ import OfflineBadge from 'theme/components/core/OfflineBadge.vue'
 import { isServer } from '@vue-storefront/core/helpers'
 import Head from 'theme/head'
 import config from 'config'
+import { supportWebp } from 'src/themes/vsf-default/helpers'
 
 const SidebarMenu = () => import(/* webpackPreload: true */ /* webpackChunkName: "vsf-sidebar-menu" */ 'theme/components/core/blocks/SidebarMenu/SidebarMenu.vue')
 const Microcart = () => import(/* webpackPreload: true */ /* webpackChunkName: "vsf-microcart" */ 'theme/components/core/blocks/Microcart/Microcart.vue')
@@ -107,6 +108,8 @@ export default {
       this.$Progress.finish()
     })
     this.$bus.$on('offline-order-confirmation', this.onOrderConfirmation)
+
+    this.$store.commit('ui/setSupportsWebp', supportWebp())
   },
   beforeDestroy () {
     this.$bus.$off('offline-order-confirmation', this.onOrderConfirmation)
