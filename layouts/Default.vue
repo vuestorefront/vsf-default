@@ -26,11 +26,31 @@
         @close="$store.commit('ui/setWishlist')"
       />
       <slot />
-      <main-footer />
-      <notification />
-      <sign-up />
-      <cookie-notification />
-      <offline-badge />
+      <lazy-hydrate when-visible v-if="isLazyHydrateEnabled.footer">
+        <main-footer />
+      </lazy-hydrate>
+      <main-footer v-else/>
+
+      <lazy-hydrate when-visible v-if="isLazyHydrateEnabled.notification">
+        <notification />
+      </lazy-hydrate>
+      <notification v-else/>
+
+      <lazy-hydrate when-idle v-if="isLazyHydrateEnabled.signUp">
+        <sign-up />
+      </lazy-hydrate>
+      <sign-up v-else/>
+
+      <lazy-hydrate when-idle v-if="isLazyHydrateEnabled.cookieNotification">
+        <cookie-notification />
+      </lazy-hydrate>
+      <cookie-notification v-else/>
+
+      <lazy-hydrate when-idle v-if="isLazyHydrateEnabled.offlineBadge">
+        <offline-badge />
+      </lazy-hydrate>
+      <offline-badge v-else/>
+      
       <order-confirmation :orders-data="ordersData" v-if="loadOrderConfirmation" />
     </div>
     <vue-progress-bar />
@@ -52,6 +72,7 @@ import { isServer } from '@vue-storefront/core/helpers'
 import Head from 'theme/head'
 import config from 'config'
 import { supportWebp } from 'src/themes/vsf-default/helpers'
+import LazyHydrate from 'vue-lazy-hydration'
 
 const SidebarMenu = () => import(/* webpackPreload: true */ /* webpackChunkName: "vsf-sidebar-menu" */ 'theme/components/core/blocks/SidebarMenu/SidebarMenu.vue')
 const Microcart = () => import(/* webpackPreload: true */ /* webpackChunkName: "vsf-microcart" */ 'theme/components/core/blocks/Microcart/Microcart.vue')
@@ -77,7 +98,27 @@ export default {
       isSidebarOpen: state => state.ui.sidebar,
       isMicrocartOpen: state => state.ui.microcart,
       isWishlistOpen: state => state.ui.wishlist
-    })
+    }),
+    isLazyHydrateEnabled () {
+      const hydrateParts = {};
+      config.ssr.lazyHydrateFor.map(
+        field => {
+          if (field === 'layout.footer') {
+            hydrateParts.footer = true
+          } else if (field === 'layout.sign-up') {
+            hydrateParts.signUp = true
+          } else if (field === 'layout.notification') {
+            hydrateParts.notification = true
+          } else if (field === 'layout.cookie-notification') {
+            hydrateParts.cookieNotification = true
+          } else if (field === 'layout.offline-badge') {
+            hydrateParts.offlineBadge = true
+          }
+        }
+      )
+
+      return hydrateParts;
+    }
   },
   methods: {
     onOrderConfirmation (payload) {
@@ -126,7 +167,8 @@ export default {
     CookieNotification,
     OfflineBadge,
     OrderConfirmation,
-    AsyncSidebar
+    AsyncSidebar,
+    LazyHydrate
   }
 }
 </script>
