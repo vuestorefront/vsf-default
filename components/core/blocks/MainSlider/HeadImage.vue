@@ -2,7 +2,7 @@
   <section class="head-image w-100 bg-cl-th-accent cl-white">
     <div 
       class="container w-100 h-100 cl-black"
-      v-lazy:background-image="supportsWebp ? currentImage.image.replace('.jpg', '.webp') : currentImage.image"
+      v-lazy:background-image="currentImage.image[supportsWebp ? 'webp' : 'fallback']"
       v-if="currentImage"
     >
       <div class="head-image-content">
