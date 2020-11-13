@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 - Fix manageQuantity property type (#27)
 - Add vue-lazyload dependency (#36)
+- Use `lazyVisibility` for homepage to load new collection (#50)
 
 ## [1.12.2] - UNRELEASED
 
