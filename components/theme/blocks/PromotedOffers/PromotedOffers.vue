@@ -9,7 +9,7 @@
         <router-link :to="localizedRoute(banner.link)">
           <div
             class="offer"
-            v-lazy:background-image="banner.image[supportsWebp ? 'webp' : 'fallback']"
+            :style="{backgroundImage: `url('${banner.image[supportsWebp ? 'webp' : 'fallback']}')`}"
           >
             <h2 class="title m0 h1">
               {{ banner.title }}
@@ -30,7 +30,7 @@
           <router-link :to="localizedRoute(banner.link)">
             <div
               class="offer offer-small border-box p5 flex bg-cl-th-accent"
-              v-lazy:background-image="banner.image[supportsWebp ? 'webp' : 'fallback']"
+              :style="{backgroundImage: `url('${banner.image[supportsWebp ? 'webp' : 'fallback']}')`}"
             >
               <h2 class="title m0 h1">
                 {{ banner.title }}
@@ -54,7 +54,7 @@
         <router-link :to="localizedRoute(banner.link)">
           <div
             class="offer offer-product border-box p5 flex bg-cl-th-accent"
-            v-lazy:background-image="banner.image[supportsWebp ? 'webp' : 'fallback']"
+            :style="{backgroundImage: `url('${banner.image[supportsWebp ? 'webp' : 'fallback']}')`}"
           >
             <h2 class="title m0 h1">
               {{ banner.title }}
@@ -153,10 +153,6 @@ export default {
   .offer-product {
     height: 330px;
     background-position: 50% 20%;
-
-    @media (max-width: 767px) {
-      height: 330px;
-    }
   }
   .title {
     @media (max-width: 767px) {
