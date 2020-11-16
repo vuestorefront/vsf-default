@@ -2,13 +2,13 @@
   <section v-if="!singleBanner" class="offers container my30 px15 cl-black">
     <div class="row">
       <div
-        class="offer-container col-xs-12 col-sm-6 pb15"
+        class="offer-container offer-container--main col-xs-12 col-sm-6 pb15"
         v-for="(banner, index) in banners.mainBanners"
         :key="index"
       >
         <router-link :to="localizedRoute(banner.link)">
           <div
-            class="offer"
+            class="offer offer--main"
             :style="{backgroundImage: `url('${banner.image[supportsWebp ? 'webp' : 'fallback']}')`}"
           >
             <h2 class="title m0 h1">
@@ -27,19 +27,21 @@
           v-for="(banner, index) in banners.smallBanners"
           :key="index"
         >
-          <router-link :to="localizedRoute(banner.link)">
-            <div
-              class="offer offer-small border-box p5 flex bg-cl-th-accent"
-              :style="{backgroundImage: `url('${banner.image[supportsWebp ? 'webp' : 'fallback']}')`}"
-            >
-              <h2 class="title m0 h1">
-                {{ banner.title }}
-              </h2>
-              <p class="subtitle m0 serif h3 uppercase">
-                {{ banner.subtitle }}
-              </p>
-            </div>
-          </router-link>
+          <lazy-hydrate when-visible>
+            <router-link :to="localizedRoute(banner.link)">
+              <div
+                class="offer offer-small border-box p5 flex bg-cl-th-accent"
+                v-lazy:background-image="banner.image[supportsWebp ? 'webp' : 'fallback']"
+              >
+                <h2 class="title m0 h1">
+                  {{ banner.title }}
+                </h2>
+                <p class="subtitle m0 serif h3 uppercase">
+                  {{ banner.subtitle }}
+                </p>
+              </div>
+            </router-link>
+          </lazy-hydrate>
         </div>
       </div>
     </div>
@@ -51,19 +53,21 @@
         v-for="(banner, index) in banners.productBanners"
         :key="index"
       >
-        <router-link :to="localizedRoute(banner.link)">
-          <div
-            class="offer offer-product border-box p5 flex bg-cl-th-accent"
-            :style="{backgroundImage: `url('${banner.image[supportsWebp ? 'webp' : 'fallback']}')`}"
-          >
-            <h2 class="title m0 h1">
-              {{ banner.title }}
-            </h2>
-            <p class="subtitle m0 serif h3 uppercase">
-              {{ banner.subtitle }}
-            </p>
-          </div>
-        </router-link>
+        <lazy-hydrate when-visible>
+          <router-link :to="localizedRoute(banner.link)">
+            <div
+              class="offer offer-product border-box p5 flex bg-cl-th-accent"
+              v-lazy:background-image="banner.image[supportsWebp ? 'webp' : 'fallback']"
+            >
+              <h2 class="title m0 h1">
+                {{ banner.title }}
+              </h2>
+              <p class="subtitle m0 serif h3 uppercase">
+                {{ banner.subtitle }}
+              </p>
+            </div>
+          </router-link>
+        </lazy-hydrate>
       </div>
     </div>
   </section>
@@ -71,6 +75,7 @@
 
 <script>
 import { mapGetters, mapActions } from 'vuex'
+import LazyHydrate from 'vue-lazy-hydration'
 
 export default {
   name: 'PromotedOffers',
@@ -80,6 +85,9 @@ export default {
       required: false,
       default: false
     }
+  },
+  components: {
+    LazyHydrate
   },
   computed: {
     ...mapGetters({
@@ -105,6 +113,11 @@ export default {
     &:last-child {
       padding-bottom: 0;
     }
+    &--main {
+      @media (max-width: 576px) {
+        height: calc(100vh - 84px);
+      }
+    }
   }
   .offer {
     height: 735px;
@@ -117,12 +130,18 @@ export default {
     opacity: 1;
     transition: 0.3s all;
 
-    &:hover {
-      opacity: 0.9;
-    }
-
     @media (max-width: 767px) {
       height: 200px;
+    }
+
+    &--main {
+      @media (max-width: 575px) {
+        height: 100%;
+      }
+    }
+
+    &:hover {
+      opacity: 0.9;
     }
 
     .title {
