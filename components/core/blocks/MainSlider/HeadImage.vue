@@ -26,13 +26,52 @@
 </template>
 
 <script>
+import { currentStoreView } from '@vue-storefront/core/lib/multistore'
 import { mapGetters } from 'vuex'
+
+const headImage = {
+  de: {
+    "image": {
+      "title": "Neue Wege beschreiten.",
+      "subtitle": "Eine Mode kann sich zu einem neuen Stil durchsetzen und offenbart die neusten Kreationen von Designern, Technologen, Ingenieuren und Designmanagern.",
+      "image": {
+        "webp": "/assets/full_width_banner.webp",
+        "fallback": "/assets/full_width_banner.jpg"
+      },
+      "link": "/women/frauen-20"
+    }
+  },
+  it: {
+    "image": {
+      "title": "Cammina la passeggiata.",
+      "subtitle": "Una moda può diventare lo stile prevalente nel comportamento o manifestare le ultime creazioni di designer, tecnologi, ingegneri e responsabili del design.",
+      "image": {
+        "webp": "/assets/full_width_banner.webp",
+        "fallback": "/assets/full_width_banner.jpg"
+      },
+      "link": "/women/la-donne-20"
+    }
+  },
+  default: {
+    "image": {
+        "title": "Walk the walk.",
+        "subtitle": "A fashion can become the prevailing style in behaviour or manifest the newest creations of designers, technologists, engineers, and design managers.",
+        "image": {
+          "webp": "/assets/full_width_banner.webp",
+          "fallback": "/assets/full_width_banner.jpg"
+        },
+        "link": "/women.html"
+    }
+  }
+}
 
 export default {
   computed: {
-    ...mapGetters({
-      currentImage: 'promoted/getHeadImage'
-    }),
+    currentImage () {
+      const { storeCode } = currentStoreView()
+      
+      return headImage[storeCode] || headImage.default
+    },
     supportsWebp () {
       return this.$store.state.ui.supportsWebp
     }

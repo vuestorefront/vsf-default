@@ -9,6 +9,8 @@
         <router-link :to="localizedRoute(banner.link)">
           <div
             class="offer offer--main"
+            :class="{'webp': supportsWebp}"
+            :data-bg="banner.image[supportsWebp ? 'webp' : 'fallback']"
             :style="{backgroundImage: `url('${banner.image[supportsWebp ? 'webp' : 'fallback']}')`}"
           >
             <h2 class="title m0 h1">
@@ -76,6 +78,142 @@
 <script>
 import { mapGetters, mapActions } from 'vuex'
 import LazyHydrate from 'vue-lazy-hydration'
+import { currentStoreView } from '@vue-storefront/core/lib/multistore'
+
+const offers = {
+  de: {
+    "mainBanners": [
+      {
+        "title": "Lässige Büro",
+        "subtitle": "Kollektion",
+        "image": {
+          "webp": "/assets/ban1.webp",
+          "fallback": "/assets/ban1.jpg"
+        },
+        "link": "/women/frauen-20"
+      }
+    ],
+    "smallBanners": [
+      {
+        "title": "Glänzen Sie mit",
+        "subtitle": "Accessoires",
+        "image": {
+          "webp": "/assets/ban2.webp",
+          "fallback": "/assets/ban2.jpg"
+        },
+        "link": "/men/herren-11"
+      },
+      {
+        "title": "Der Frühling kommt",
+        "subtitle": "Hüte",
+        "image": {
+          "webp": "/assets/ban3.webp",
+          "fallback": "/assets/ban3.jpg"
+        },
+        "link": "/gear/gerat-3"
+      }
+    ],
+    "productBanners": [
+      {
+        "title": "Der Frühling kommt",
+        "subtitle": "Hüte",
+        "image": {
+          "webp": "/assets/ban3.webp",
+          "fallback": "/assets/ban3.jpg"
+        },
+        "link": "/gear/gerat-3"
+      }
+    ]
+  },
+  it: {
+    "mainBanners": [
+      {
+        "title": "Ufficio casual",
+        "subtitle": "Collezione",
+        "image": {
+          "webp": "/assets/ban1.webp",
+          "fallback": "/assets/ban1.jpg"
+        },
+        "link": "/women/la-donne-20"
+      }
+    ],
+    "smallBanners": [
+      {
+        "title": "Brilla",
+        "subtitle": "Accessori",
+        "image": {
+          "webp": "/assets/ban2.webp",
+          "fallback": "/assets/ban2.jpg"
+        },
+        "link": "/men/signori-11"
+      },
+      {
+        "title": "La primavera sta arrivando",
+        "subtitle": "Cappelli",
+        "image": {
+          "webp": "/assets/ban3.webp",
+          "fallback": "/assets/ban3.jpg"
+        },
+        "link": "/gear/equipaggiamento-3"
+      }
+    ],
+    "productBanners": [
+      {
+        "title": "La primavera sta arrivando",
+        "subtitle": "Cappelli",
+        "image": {
+          "webp": "/assets/ban3.webp",
+          "fallback": "/assets/ban3.jpg"
+        },
+        "link": "/gear/equipaggiamento-3"
+      }
+    ]
+  },
+  default: {
+    "mainBanners": [
+      {
+        "title": "Office casual",
+        "subtitle": "Collection",
+        "image": {
+          "webp": "/assets/ban1.webp",
+          "fallback": "/assets/ban1.jpg"
+        },
+        "link": "/women.html"
+      }
+    ],
+    "smallBanners": [
+      {
+        "title": "Shine on",
+        "subtitle": "Accessories",
+        "image": {
+          "webp": "/assets/ban2.webp",
+          "fallback": "/assets/ban2.jpg"
+        },
+        "link": "/men.html"
+      },
+      {
+        "title": "Spring is coming",
+        "subtitle": "Hats",
+        "image": {
+          "webp": "/assets/ban3.webp",
+          "fallback": "/assets/ban3.jpg"
+        },
+        "link": "/gear.html"
+      }
+    ],
+    "productBanners": [
+      {
+        "title": "Spring is coming",
+        "subtitle": "Hats",
+        "image": {
+          "webp": "/assets/ban3.webp",
+          "fallback": "/assets/ban3.jpg"
+        },
+        "link": "/gear.html"
+      }
+    ]
+  }
+}
 
 export default {
   name: 'PromotedOffers',
@@ -90,20 +228,14 @@ export default {
     LazyHydrate
   },
   computed: {
-    ...mapGetters({
-      banners: 'promoted/getPromotedOffers'
-    }),
+    banners () {
+      const { storeCode } = currentStoreView()
+      
+      return offers[storeCode] || offers.default
+    },
     supportsWebp () {
       return this.$store.state.ui.supportsWebp
     }
-  },
-  async created () {
-    await this.updatePromotedOffers()
-  },
-  methods: {
-    ...mapActions({
-      updatePromotedOffers: 'promoted/updatePromotedOffers'
-    })
   }
 }
 </script>
