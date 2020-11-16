@@ -10,8 +10,6 @@
           <div
             class="offer offer--main"
             :class="{'webp': supportsWebp}"
-            :data-bg="banner.image[supportsWebp ? 'webp' : 'fallback']"
-            :style="{backgroundImage: `url('${banner.image[supportsWebp ? 'webp' : 'fallback']}')`}"
           >
             <h2 class="title m0 h1">
               {{ banner.title }}
@@ -33,7 +31,11 @@
             <router-link :to="localizedRoute(banner.link)">
               <div
                 class="offer offer-small border-box p5 flex bg-cl-th-accent"
-                v-lazy:background-image="banner.image[supportsWebp ? 'webp' : 'fallback']"
+                :class="{
+                  'webp': supportsWebp, 
+                  'offer-shine-on': index === 0,
+                  'offer-spring': index === 1
+                  }"
               >
                 <h2 class="title m0 h1">
                   {{ banner.title }}
@@ -58,8 +60,7 @@
         <lazy-hydrate when-visible>
           <router-link :to="localizedRoute(banner.link)">
             <div
-              class="offer offer-product border-box p5 flex bg-cl-th-accent"
-              v-lazy:background-image="banner.image[supportsWebp ? 'webp' : 'fallback']"
+              class="offer offer-spring offer-product border-box p5 flex bg-cl-th-accent"
             >
               <h2 class="title m0 h1">
                 {{ banner.title }}
@@ -86,10 +87,6 @@ const offers = {
       {
         "title": "Lässige Büro",
         "subtitle": "Kollektion",
-        "image": {
-          "webp": "/assets/ban1.webp",
-          "fallback": "/assets/ban1.jpg"
-        },
         "link": "/women/frauen-20"
       }
     ],
@@ -97,19 +94,11 @@ const offers = {
       {
         "title": "Glänzen Sie mit",
         "subtitle": "Accessoires",
-        "image": {
-          "webp": "/assets/ban2.webp",
-          "fallback": "/assets/ban2.jpg"
-        },
         "link": "/men/herren-11"
       },
       {
         "title": "Der Frühling kommt",
         "subtitle": "Hüte",
-        "image": {
-          "webp": "/assets/ban3.webp",
-          "fallback": "/assets/ban3.jpg"
-        },
         "link": "/gear/gerat-3"
       }
     ],
@@ -117,10 +106,6 @@ const offers = {
       {
         "title": "Der Frühling kommt",
         "subtitle": "Hüte",
-        "image": {
-          "webp": "/assets/ban3.webp",
-          "fallback": "/assets/ban3.jpg"
-        },
         "link": "/gear/gerat-3"
       }
     ]
@@ -130,10 +115,6 @@ const offers = {
       {
         "title": "Ufficio casual",
         "subtitle": "Collezione",
-        "image": {
-          "webp": "/assets/ban1.webp",
-          "fallback": "/assets/ban1.jpg"
-        },
         "link": "/women/la-donne-20"
       }
     ],
@@ -141,19 +122,11 @@ const offers = {
       {
         "title": "Brilla",
         "subtitle": "Accessori",
-        "image": {
-          "webp": "/assets/ban2.webp",
-          "fallback": "/assets/ban2.jpg"
-        },
         "link": "/men/signori-11"
       },
       {
         "title": "La primavera sta arrivando",
         "subtitle": "Cappelli",
-        "image": {
-          "webp": "/assets/ban3.webp",
-          "fallback": "/assets/ban3.jpg"
-        },
         "link": "/gear/equipaggiamento-3"
       }
     ],
@@ -161,10 +134,6 @@ const offers = {
       {
         "title": "La primavera sta arrivando",
         "subtitle": "Cappelli",
-        "image": {
-          "webp": "/assets/ban3.webp",
-          "fallback": "/assets/ban3.jpg"
-        },
         "link": "/gear/equipaggiamento-3"
       }
     ]
@@ -174,10 +143,6 @@ const offers = {
       {
         "title": "Office casual",
         "subtitle": "Collection",
-        "image": {
-          "webp": "/assets/ban1.webp",
-          "fallback": "/assets/ban1.jpg"
-        },
         "link": "/women.html"
       }
     ],
@@ -185,19 +150,11 @@ const offers = {
       {
         "title": "Shine on",
         "subtitle": "Accessories",
-        "image": {
-          "webp": "/assets/ban2.webp",
-          "fallback": "/assets/ban2.jpg"
-        },
         "link": "/men.html"
       },
       {
         "title": "Spring is coming",
         "subtitle": "Hats",
-        "image": {
-          "webp": "/assets/ban3.webp",
-          "fallback": "/assets/ban3.jpg"
-        },
         "link": "/gear.html"
       }
     ],
@@ -205,10 +162,6 @@ const offers = {
       {
         "title": "Spring is coming",
         "subtitle": "Hats",
-        "image": {
-          "webp": "/assets/ban3.webp",
-          "fallback": "/assets/ban3.jpg"
-        },
         "link": "/gear.html"
       }
     ]
@@ -267,9 +220,126 @@ export default {
     }
 
     &--main {
-      @media (max-width: 575px) {
-        height: 100%;
-      }
+        background-image: url('/assets/ban1-320.jpg');
+          @media (min-width: 375px) {
+            background-image: url('/assets/ban1-520.jpg');
+          }
+
+          @media (min-width: 576px) {
+            background-image: url('/assets/ban1-320.jpg');
+          }
+
+          @media (min-width: 768px) {
+            background-image: url('/assets/ban1-460.jpg');
+          }
+
+          @media (min-width: 1200px) {
+            background-image: url('/assets/ban1.jpg');
+          }
+
+        &.webp {
+          background-image: url('/assets/ban1-320.webp');
+          @media (min-width: 375px) {
+            background-image: url('/assets/ban1-520.webp');
+          }
+
+          @media (min-width: 576px) {
+            background-image: url('/assets/ban1-320.webp');
+          }
+
+          @media (min-width: 768px) {
+            background-image: url('/assets/ban1-460.webp');
+          }
+
+          @media (min-width: 1200px) {
+            background-image: url('/assets/ban1.webp');
+          }
+        }
+        @media (max-width: 575px) {
+          height: 100%;
+        }
+    }
+
+    &-shine-on {
+        background-image: url('/assets/ban2-320.jpg');
+          @media (min-width: 375px) {
+            background-image: url('/assets/ban2-520.jpg');
+          }
+
+          @media (min-width: 576px) {
+            background-image: url('/assets/ban2-320.jpg');
+          }
+
+          @media (min-width: 768px) {
+            background-image: url('/assets/ban2-460.jpg');
+          }
+
+          @media (min-width: 1200px) {
+            background-image: url('/assets/ban2.jpg');
+          }
+
+        &.webp {
+          background-image: url('/assets/ban2-320.webp');
+          @media (min-width: 375px) {
+            background-image: url('/assets/ban2-520.webp');
+          }
+
+          @media (min-width: 576px) {
+            background-image: url('/assets/ban2-320.webp');
+          }
+
+          @media (min-width: 768px) {
+            background-image: url('/assets/ban2-460.webp');
+          }
+
+          @media (min-width: 1200px) {
+            background-image: url('/assets/ban2.webp');
+          }
+        }
+        @media (max-width: 575px) {
+          height: 100%;
+        }
+    }
+
+    &-spring {
+        background-image: url('/assets/ban3-320.jpg');
+          @media (min-width: 375px) {
+            background-image: url('/assets/ban3-520.jpg');
+          }
+
+          @media (min-width: 576px) {
+            background-image: url('/assets/ban3-320.jpg');
+          }
+
+          @media (min-width: 768px) {
+            background-image: url('/assets/ban3-460.jpg');
+          }
+
+          @media (min-width: 1200px) {
+            background-image: url('/assets/ban3.jpg');
+          }
+
+        &.webp {
+          background-image: url('/assets/ban3-320.webp');
+          @media (min-width: 375px) {
+            background-image: url('/assets/ban3-520.webp');
+          }
+
+          @media (min-width: 576px) {
+            background-image: url('/assets/ban3-320.webp');
+          }
+
+          @media (min-width: 768px) {
+            background-image: url('/assets/ban3-460.webp');
+          }
+
+          @media (min-width: 1200px) {
+            background-image: url('/assets/ban3.webp');
+          }
+        }
+        @media (max-width: 575px) {
+          height: 100%;
+        }
     }
 
     &:hover {
