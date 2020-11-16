@@ -11,6 +11,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Fix manageQuantity property type (#27)
 - Add vue-lazyload dependency (#36)
 - Use `lazyVisibility` for homepage to load new collection (#50)
+- Response images on homepage & WebP
+- HeadImage.vue as a functional component
+- Get rid of banners & headimage jsons
 
 ## [1.12.2] - UNRELEASED
 
