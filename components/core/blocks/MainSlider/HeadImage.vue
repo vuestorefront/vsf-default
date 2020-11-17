@@ -68,78 +68,42 @@ export default {
   &__container {
     background-image: url('/assets/full_width_banner-800.jpg');
     @media (min-width: 850px) {
-      background-image: url('/assets/full_width_banner-900.jpg');
-    }
-    @media (min-width: 950px) {
       background-image: url('/assets/full_width_banner-1000.jpg');
     }
     @media (min-width: 1050px) {
-      background-image: url('/assets/full_width_banner-1100.jpg');
-    }
-    @media (min-width: 1150px) {
       background-image: url('/assets/full_width_banner-1200.jpg');
     }
     @media (min-width: 1250px) {
-      background-image: url('/assets/full_width_banner-1300.jpg');
-    }
-    @media (min-width: 1350px) {
       background-image: url('/assets/full_width_banner-1400.jpg');
     }
     @media (min-width: 1450px) {
-      background-image: url('/assets/full_width_banner-1500.jpg');
-    }
-    @media (min-width: 1550px) {
       background-image: url('/assets/full_width_banner-1600.jpg');
     }
     @media (min-width: 1650px) {
-      background-image: url('/assets/full_width_banner-1700.jpg');
-    }
-    @media (min-width: 1750px) {
       background-image: url('/assets/full_width_banner-1800.jpg');
     }
     @media (min-width: 1850px) {
-      background-image: url('/assets/full_width_banner-1900.jpg');
-    }
-    @media (min-width: 1950px) {
       background-image: url('/assets/full_width_banner.jpg');
     }
 
     &.webp {
       background-image: url('/assets/full_width_banner-800.webp');
       @media (min-width: 850px) {
-        background-image: url('/assets/full_width_banner-900.webp');
-      }
-      @media (min-width: 950px) {
         background-image: url('/assets/full_width_banner-1000.webp');
       }
       @media (min-width: 1050px) {
-        background-image: url('/assets/full_width_banner-1100.webp');
-      }
-      @media (min-width: 1150px) {
         background-image: url('/assets/full_width_banner-1200.webp');
       }
       @media (min-width: 1250px) {
-        background-image: url('/assets/full_width_banner-1300.webp');
-      }
-      @media (min-width: 1350px) {
         background-image: url('/assets/full_width_banner-1400.webp');
       }
       @media (min-width: 1450px) {
-        background-image: url('/assets/full_width_banner-1500.webp');
-      }
-      @media (min-width: 1550px) {
         background-image: url('/assets/full_width_banner-1600.webp');
       }
       @media (min-width: 1650px) {
-        background-image: url('/assets/full_width_banner-1700.webp');
-      }
-      @media (min-width: 1750px) {
         background-image: url('/assets/full_width_banner-1800.webp');
       }
       @media (min-width: 1850px) {
-        background-image: url('/assets/full_width_banner-1900.webp');
-      }
-      @media (min-width: 1950px) {
         background-image: url('/assets/full_width_banner.webp');
       }
     }
