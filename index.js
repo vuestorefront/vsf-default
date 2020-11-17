@@ -11,7 +11,6 @@ import { module as cartModule } from './store/cart'
 import { claimsStore } from 'theme/store/claims'
 import { homepageStore } from 'theme/store/homepage'
 import { uiStore } from 'theme/store/ui'
-import { promotedStore } from 'theme/store/promoted-offers'
 import { StorageManager } from '@vue-storefront/core/lib/storage-manager'
 
 once('__VUE_EXTEND_DROPPOINT_VPB__', () => {
@@ -36,7 +35,6 @@ function initTheme (app, router, store, config, ssrContext) {
   store.registerModule('claims', claimsStore);
   store.registerModule('homepage', homepageStore);
   store.registerModule('ui', uiStore);
-  store.registerModule('promoted', promotedStore);
 }
 
 export {

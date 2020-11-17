@@ -1,6 +1,9 @@
 <template>
   <div id="home">
-    <head-image />
+    <head-image 
+      :currentImage="currentImage"
+      :supportsWebp="supportsWebp"
+    />
     <promoted-offers />
 
     <section class="new-collection container px15">
@@ -51,6 +54,33 @@ import config from 'config'
 import { registerModule } from '@vue-storefront/core/lib/modules'
 import { RecentlyViewedModule } from '@vue-storefront/core/modules/recently-viewed'
 import createLazyVisibility from '@vue-storefront/core/mixins/createLazyVisibility'
+import { currentStoreView } from '@vue-storefront/core/lib/multistore'
+
+const image = {
+  webp: "/assets/full_width_banner.webp",
+  fallback: "/assets/full_width_banner.jpg"
+}
+
+const headImage = {
+  de: {
+    title: "Neue Wege beschreiten.",
+    subtitle: "Eine Mode kann sich zu einem neuen Stil durchsetzen und offenbart die neusten Kreationen von Designern, Technologen, Ingenieuren und Designmanagern.",
+    link: "/women/frauen-20",
+    image
+  },
+  it: {
+    title: "Cammina la passeggiata.",
+    subtitle: "Una moda può diventare lo stile prevalente nel comportamento o manifestare le ultime creazioni di designer, tecnologi, ingegneri e responsabili del design.",
+    link: "/women/la-donne-20",
+    image
+  },
+  default: {
+    title: "Walk the walk.",
+    subtitle: "A fashion can become the prevailing style in behaviour or manifest the newest creations of designers, technologists, engineers, and design managers.",
+    link: "/women.html",
+    image
+  }
+}
 
 export default {
   components: {
@@ -77,6 +107,14 @@ export default {
     },
     newCollectionLoaded () {
       return this.newCollectionLazyVisibilityMetadata.loaded
+    },
+    currentImage () {
+      const { storeCode } = currentStoreView()
+      
+      return headImage[storeCode] || headImage.default
+    },
+    supportsWebp () {
+      return this.$store.state.ui.supportsWebp
     }
   },
   methods: {
@@ -108,9 +146,7 @@ export default {
     Logger.info('Calling asyncData in Home Page (core)')()
 
     await Promise.all([
-      store.dispatch('homepage/fetchNewCollection'),
-      store.dispatch('promoted/updateHeadImage'),
-      store.dispatch('promoted/updatePromotedOffers')
+      store.dispatch('homepage/fetchNewCollection')
     ])
   },
   metaInfo () {
