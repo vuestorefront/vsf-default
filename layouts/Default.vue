@@ -30,9 +30,7 @@
         <main-footer />
       </lazy-hydrate>
 
-      <lazy-hydrate when-visible>
-        <notification />
-      </lazy-hydrate>
+      <notification v-if="notifications"/>
 
       <lazy-hydrate when-idle>
         <sign-up />
@@ -58,7 +56,6 @@ import AsyncSidebar from 'theme/components/theme/blocks/AsyncSidebar/AsyncSideba
 import MainHeader from 'theme/components/core/blocks/Header/Header.vue'
 import MainFooter from 'theme/components/core/blocks/Footer/Footer.vue'
 import Loader from 'theme/components/core/Loader.vue'
-import Notification from 'theme/components/core/Notification.vue'
 import SignUp from 'theme/components/core/blocks/Auth/SignUp.vue'
 import CookieNotification from 'theme/components/core/CookieNotification.vue'
 import OfflineBadge from 'theme/components/core/OfflineBadge.vue'
@@ -71,7 +68,9 @@ import LazyHydrate from 'vue-lazy-hydration'
 const SidebarMenu = () => import(/* webpackPreload: true */ /* webpackChunkName: "vsf-sidebar-menu" */ 'theme/components/core/blocks/SidebarMenu/SidebarMenu.vue')
 const Microcart = () => import(/* webpackPreload: true */ /* webpackChunkName: "vsf-microcart" */ 'theme/components/core/blocks/Microcart/Microcart.vue')
 const Wishlist = () => import(/* webpackPreload: true */ /* webpackChunkName: "vsf-wishlist" */ 'theme/components/core/blocks/Wishlist/Wishlist.vue')
+const Notification = () => import(/* webpackPreload: true */ /* webpackChunkName: "vsf-notification" */ 'theme/components/core/Notification.vue')
 const SearchPanel = () => import(/* webpackChunkName: "vsf-search-panel" */ 'theme/components/core/blocks/SearchPanel/SearchPanel.vue')
+const Overlay = () => import(/* webpackChunkName: "vsf-overlay" */ 'theme/components/core/Overlay.vue')
 const OrderConfirmation = () => import(/* webpackChunkName: "vsf-order-confirmation" */ 'theme/components/core/blocks/Checkout/OrderConfirmation.vue')
 
 export default {
@@ -92,7 +91,10 @@ export default {
       isSidebarOpen: state => state.ui.sidebar,
       isMicrocartOpen: state => state.ui.microcart,
       isWishlistOpen: state => state.ui.wishlist
-    })
+    }),
+    notifications () {
+      return this.$store.getters['notification/notifications']
+    }
   },
   methods: {
     onOrderConfirmation (payload) {
@@ -134,7 +136,7 @@ export default {
     MainHeader,
     MainFooter,
     SidebarMenu, // eslint-disable-line vue/no-unused-components
-    Overlay: () => import('theme/components/core/Overlay.vue'),
+    Overlay,
     Loader,
     Notification,
     SignUp,
