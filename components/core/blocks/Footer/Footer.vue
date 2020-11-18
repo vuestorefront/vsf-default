@@ -162,9 +162,8 @@
 
 <script>
 import { mapGetters } from 'vuex'
-import { currentStoreView, localizedRoute } from '@vue-storefront/core/lib/multistore'
+import { currentStoreView } from '@vue-storefront/core/lib/multistore'
 import CurrentPage from 'theme/mixins/currentPage'
-import LanguageSwitcher from '../../LanguageSwitcher.vue'
 import Newsletter from 'theme/components/core/blocks/Footer/Newsletter'
 import BackToTop from 'theme/components/core/BackToTop'
 import { getPathForStaticPage } from 'theme/helpers'
@@ -178,7 +177,7 @@ export default {
       this.$bus.$emit('modal-toggle', 'modal-signup')
     },
     getLinkFor (path) {
-      return localizedRoute(getPathForStaticPage(path))
+      return this.localizedRoute(getPathForStaticPage(path))
     }
   },
   computed: {
@@ -194,7 +193,7 @@ export default {
   },
   components: {
     Newsletter,
-    LanguageSwitcher,
+    LanguageSwitcher: () => import('../../LanguageSwitcher.vue'),
     BackToTop
   }
 }

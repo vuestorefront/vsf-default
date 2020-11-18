@@ -5,8 +5,6 @@
       v-if="isVisible"
       ref="modal"
     >
-      <!--      <div class="modal-wrapper">-->
-      <!--        <div class="modal-center">-->
       <div class="modal-backdrop" @click="close" />
       <div class="modal-container bg-cl-primary" ref="modal-content" :style="style">
         <header class="modal-header py25 px65 h1 serif weight-700 bg-cl-secondary" v-if="$slots.header">
@@ -26,8 +24,6 @@
         <slot />
       </div>
     </div>
-    <!--      </div>-->
-    <!--    </div>-->
   </transition>
 </template>
 

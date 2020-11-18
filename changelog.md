@@ -14,6 +14,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Response images on homepage & WebP
 - HeadImage.vue as a functional component
 - Get rid of banners & headimage jsons
+- Separated MainHeader to two components & lazy loading them
+- Lazy loading overlay component
+- Lazy loadig Notification component
+- Lazy loading Auth components in the Auth Modal
+- Offline badge in a separate bundle
+- Lazy load language switcher
 
 ## [1.12.2] - UNRELEASED
 
