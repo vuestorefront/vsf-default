@@ -19,9 +19,9 @@ export default {
   },
   components: {
     Modal,
-    Login: () => import('theme/components/core/blocks/Auth/Login'),
-    Register: () => import('theme/components/core/blocks/Auth/Register'),
-    ForgotPass: () => import('theme/components/core/blocks/Auth/ForgotPass')
+    Login: () => import(/* webpackChunkName: "modal-auth-login" */ 'theme/components/core/blocks/Auth/Login'),
+    Register: () => import(/* webpackChunkName: "modal-auth-register" */ 'theme/components/core/blocks/Auth/Register'),
+    ForgotPass: () => import(/* webpackChunkName: "modal-auth-forgot-pass" */ 'theme/components/core/blocks/Auth/ForgotPass')
   }
 }
 </script>
