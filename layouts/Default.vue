@@ -1,7 +1,10 @@
 <template>
   <div class="default-layout">
     <overlay v-if="overlayActive" />
-    <loader />
+    <loader 
+      v-if="$store.state.ui.loader"
+      :message="loaderMessage"
+    />
     <div id="viewport" class="w-100 relative">
       <main-header />
       <async-sidebar
@@ -55,7 +58,6 @@ import { mapState } from 'vuex'
 import AsyncSidebar from 'theme/components/theme/blocks/AsyncSidebar/AsyncSidebar.vue'
 import MainHeader from 'theme/components/core/blocks/Header/Header.vue'
 import MainFooter from 'theme/components/core/blocks/Footer/Footer.vue'
-import Loader from 'theme/components/core/Loader.vue'
 import SignUp from 'theme/components/core/blocks/Auth/SignUp.vue'
 import CookieNotification from 'theme/components/core/CookieNotification.vue'
 import { isServer } from '@vue-storefront/core/helpers'
@@ -72,12 +74,14 @@ const OfflineBadge = () => import(/* webpackPreload: true */ /* webpackChunkName
 const SearchPanel = () => import(/* webpackChunkName: "vsf-search-panel" */ 'theme/components/core/blocks/SearchPanel/SearchPanel.vue')
 const Overlay = () => import(/* webpackChunkName: "vsf-overlay" */ 'theme/components/core/Overlay.vue')
 const OrderConfirmation = () => import(/* webpackChunkName: "vsf-order-confirmation" */ 'theme/components/core/blocks/Checkout/OrderConfirmation.vue')
+const Loader = () => import(/* webpackChunkName: "vsf-loader" */ 'theme/components/core/Loader.vue')
 
 export default {
   data () {
     return {
       loadOrderConfirmation: false,
       ordersData: [],
+      loaderMessage: null,
       Microcart,
       Wishlist,
       SearchPanel,
@@ -127,6 +131,24 @@ export default {
     this.$bus.$on('offline-order-confirmation', this.onOrderConfirmation)
 
     this.$store.commit('ui/setSupportsWebp', supportWebp())
+
+    const show = (message = null) => {
+      this.loaderMessage = message
+      this.$store.commit('ui/setLoader', true)
+    }
+    const hide = () => {
+      this.$store.commit('ui/setLoader', false)
+    }
+    this.$bus.$on('notification-progress-start', show)
+    this.$bus.$on('notification-progress-stop', hide)
+    this.$on('hook:beforeDestroy', () => {
+      this.$bus.$off('notification-progress-start', show)
+      this.$bus.$off('notification-progress-stop', hide)
+    })
+
+    setTimeout(()=>{
+      show('heheheh')
+    },2500)
   },
   beforeDestroy () {
     this.$bus.$off('offline-order-confirmation', this.onOrderConfirmation)

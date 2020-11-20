@@ -20,7 +20,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Lazy loading Auth components in the Auth Modal
 - Offline badge in a separate bundle
 - Lazy load language switcher
-
+- Lazy load loader in default layout
 ### Changed
 - Updated Vuex to 3.5.1
 - Refactor of some parts of views
