@@ -25,6 +25,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Updated Vuex to 3.5.1
 - Refactor of some parts of views
 - Loading `homepage` vuex module only when needed (on 2 views)
+- Functional LoaderScoped.vue
 
 ## [1.12.2] - UNRELEASED
 
