@@ -145,10 +145,6 @@ export default {
       this.$bus.$off('notification-progress-start', show)
       this.$bus.$off('notification-progress-stop', hide)
     })
-
-    setTimeout(()=>{
-      show('heheheh')
-    },2500)
   },
   beforeDestroy () {
     this.$bus.$off('offline-order-confirmation', this.onOrderConfirmation)
