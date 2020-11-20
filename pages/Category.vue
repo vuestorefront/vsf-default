@@ -2,21 +2,27 @@
   <div id="category">
     <header class="bg-cl-secondary py35 pl20">
       <div class="container">
-        <breadcrumbs />
+        <lazy-hydrate when-idle>
+          <breadcrumbs />
+        </lazy-hydrate>
         <div class="row middle-sm">
           <h1 class="col-sm-8 category-title mb10">
             {{ getCurrentCategory.name }}
           </h1>
           <div class="sorting col-sm-2 align-right mt50">
             <label class="mr10">{{ $t('Columns') }}:</label>
-            <columns @change-column="columnChange" />
+            <lazy-hydrate when-idle>
+              <columns @change-column="columnChange" />
+            </lazy-hydrate>
           </div>
           <div class="sorting col-sm-2 align-right mt50">
-            <sort-by
-              :has-label="true"
-              @change="changeFilter"
-              :value="getCurrentSearchQuery.sort"
-            />
+            <lazy-hydrate when-idle>
+              <sort-by
+                @change="changeFilter"
+                :value="getCurrentSearchQuery.sort"
+                has-label
+              />
+            </lazy-hydrate>
           </div>
         </div>
       </div>
@@ -29,10 +35,12 @@
             {{ $t('Filters') }}
           </button>
           <div class="mobile-sorting col-xs-6 mt25">
-            <sort-by
-              @change="changeFilter"
-              :value="getCurrentSearchQuery.sort"
-            />
+            <lazy-hydrate when-idle>
+              <sort-by
+                @change="changeFilter"
+                :value="getCurrentSearchQuery.sort"
+              />
+            </lazy-hydrate>
           </div>
         </div>
       </div>
@@ -40,7 +48,9 @@
     <div class="container pb60">
       <div class="row m0 pt15">
         <div class="col-md-3 start-xs category-filters">
-          <sidebar :filters="getAvailableFilters" @changeFilter="changeFilter" />
+          <lazy-hydrate when-idle>
+            <sidebar :filters="getAvailableFilters" @changeFilter="changeFilter" />
+          </lazy-hydrate>
         </div>
         <div
           class="col-md-3 start-xs mobile-filters"
@@ -51,7 +61,9 @@
           <div class="close-container absolute w-100">
             <i class="material-icons p15 close cl-accent" @click="closeFilters">close</i>
           </div>
-          <sidebar class="mobile-filters-body" :filters="getAvailableFilters" @changeFilter="changeFilter" />
+          <lazy-hydrate when-idle>
+            <sidebar class="mobile-filters-body" :filters="getAvailableFilters" @changeFilter="changeFilter" />
+          </lazy-hydrate>
           <div class="relative pb20 pt15">
             <div class="brdr-top-1 brdr-cl-primary absolute divider w-100" />
           </div>
