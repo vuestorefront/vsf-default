@@ -53,12 +53,14 @@
 <script>
 import { mapGetters } from 'vuex'
 import { Logger } from '@vue-storefront/core/lib/logger'
-import i18n from '@vue-storefront/i18n'
 import LazyHydrate from 'vue-lazy-hydration'
-import ProductTile from '../components/core/ProductTile.vue'
 
 export default {
   name: 'PageNotFound',
+  components: {
+    ProductTile: () => import(/* webpackChunkName: "vsf-product-tile" */ 'theme/components/core/ProductTile.vue'),
+    LazyHydrate
+  },
   computed: {
     ...mapGetters({
       ourBestsellersCollection: 'homepage/getBestsellers'
@@ -75,13 +77,9 @@ export default {
   },
   metaInfo () {
     return {
-      title: this.$route.meta.title || i18n.t('404 Page Not Found'),
+      title: this.$route.meta.title || this.$i18n.t('404 Page Not Found'),
       meta: this.$route.meta.description ? [{ vmid: 'description', name: 'description', content: this.$route.meta.description }] : []
     }
-  },
-  components: {
-    ProductTile,
-    LazyHydrate
   },
   methods: {
     toggleSearchpanel () {
