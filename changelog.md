@@ -21,6 +21,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Offline badge in a separate bundle
 - Lazy load language switcher
 
+### Changed
+- Updated Vuex to 3.5.1
+- Refactor of some parts of views
+- Loading `homepage` vuex module only when needed (on 2 views)
+
 ## [1.12.2] - UNRELEASED
 
 ### Added
