@@ -55,6 +55,7 @@ import { registerModule } from '@vue-storefront/core/lib/modules'
 import { RecentlyViewedModule } from '@vue-storefront/core/modules/recently-viewed'
 import createLazyVisibility from '@vue-storefront/core/mixins/createLazyVisibility'
 import { currentStoreView } from '@vue-storefront/core/lib/multistore'
+import { homepageStore } from 'theme/store/homepage'
 
 const image = {
   webp: "/assets/full_width_banner.webp",
@@ -122,6 +123,9 @@ export default {
   },
   beforeCreate () {
     registerModule(RecentlyViewedModule)
+    if (!this.$store.hasModule('homepage')) {
+      this.$store.registerModule('homepage', homepageStore);
+    }
   },
   async beforeMount () {
     if (this.$store.state.__DEMO_MODE__) {
@@ -144,6 +148,9 @@ export default {
   async asyncData ({ store, route, context }) { // this is for SSR purposes to prefetch data
     if (context) context.output.cacheTags.add(`home`)
     Logger.info('Calling asyncData in Home Page (core)')()
+    if (!store.hasModule('homepage')) {
+      store.registerModule('homepage', homepageStore);
+    }
 
     await Promise.all([
       store.dispatch('homepage/fetchNewCollection')

@@ -53,6 +53,7 @@
 <script>
 import { mapGetters } from 'vuex'
 import { Logger } from '@vue-storefront/core/lib/logger'
+import { homepageStore } from 'theme/store/homepage'
 import LazyHydrate from 'vue-lazy-hydration'
 
 export default {
@@ -66,11 +67,19 @@ export default {
       ourBestsellersCollection: 'homepage/getBestsellers'
     })
   },
+  beforeCreate () {
+    if (!this.$store.hasModule('homepage')) {
+      this.$store.registerModule('homepage', homepageStore);
+    }
+  },
   async asyncData ({ store, route, context }) {
     Logger.log('Entering asyncData for PageNotFound ' + new Date())()
     if (context) {
       context.output.cacheTags.add(`page-not-found`)
       context.server.response.statusCode = 404
+    }
+    if (!store.hasModule('homepage')) {
+      store.registerModule('homepage', homepageStore);
     }
 
     await store.dispatch('homepage/loadBestsellers')
