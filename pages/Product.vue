@@ -208,7 +208,9 @@
     <lazy-hydrate when-idle>
       <related-products type="related" />
     </lazy-hydrate>
-    <SizeGuide v-if="showSizeGuide" />
+    <lazy-hydrate when-idle>
+      <SizeGuide />
+    </lazy-hydrate>
     <script v-html="getJsonLd" type="application/ld+json" />
   </div>
 </template>
@@ -287,8 +289,7 @@ export default {
       quantityError: false,
       isStockInfoLoading: false,
       hasAttributesLoaded: false,
-      manageQuantity: true,
-      showSizeGuide: false
+      manageQuantity: true
     }
   },
   computed: {
@@ -389,7 +390,7 @@ export default {
       this.detailsOpen = true
     },
     openSizeGuide () {
-      this.showSizeGuide = true;
+      this.$bus.$emit('modal-show', 'modal-sizeguide');
     },
     handleQuantityError (error) {
       this.quantityError = error

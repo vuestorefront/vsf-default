@@ -19,9 +19,6 @@ export default {
   components: {
     Modal,
     SizeGuideContent
-  },
-  mounted () {
-    this.$bus.$emit('modal-show', 'modal-sizeguide')
   }
 }
 </script>
