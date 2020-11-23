@@ -39,11 +39,10 @@
 
 <script>
 import SearchPanel from '@vue-storefront/core/compatibility/components/blocks/SearchPanel/SearchPanel'
-import ProductTile from 'theme/components/core/ProductTile'
 
 export default {
   components: {
-    ProductTile
+    ProductTile: () => import(/* webpackChunkName: "vsf-product-tile" */ 'theme/components/core/ProductTile.vue')
   },
   mixins: [SearchPanel],
   data () {

@@ -39,7 +39,6 @@
 
 <script>
 import NoSSR from 'vue-no-ssr'
-import ProductTile from 'theme/components/core/ProductTile'
 
 export default {
   name: 'ProductsSlider',
@@ -60,7 +59,7 @@ export default {
   components: {
     'Carousel': () => import(/* webpackChunkName: "vue-carousel" */ 'vue-carousel').then(Slider => Slider.Carousel),
     'Slide': () => import(/* webpackChunkName: "vue-carousel" */ 'vue-carousel').then(Slider => Slider.Slide),
-    ProductTile,
+    ProductTile: () => import(/* webpackChunkName: "vsf-product-tile" */ 'theme/components/core/ProductTile.vue'),
     'no-ssr': NoSSR
   },
   data () {

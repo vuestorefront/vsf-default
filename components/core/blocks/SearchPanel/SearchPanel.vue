@@ -81,7 +81,6 @@
 
 <script>
 import SearchPanel from '@vue-storefront/core/compatibility/components/blocks/SearchPanel/SearchPanel'
-import ProductTile from 'theme/components/core/ProductTile'
 import VueOfflineMixin from 'vue-offline/mixin'
 import CategoryPanel from 'theme/components/core/blocks/Category/CategoryPanel'
 import { minLength } from 'vuelidate/lib/validators'
@@ -90,7 +89,7 @@ import { windowHelper } from 'theme/helpers'
 
 export default {
   components: {
-    ProductTile,
+    ProductTile: () => import(/* webpackChunkName: "vsf-product-tile" */ 'theme/components/core/ProductTile.vue'),
     CategoryPanel
   },
   mixins: [SearchPanel, VueOfflineMixin],

@@ -12,12 +12,11 @@
 </template>
 
 <script>
-import ProductTile from 'theme/components/core/ProductTile'
 let lastHero = 0
 export default {
   name: 'ProductListing',
   components: {
-    ProductTile
+    ProductTile: () => import(/* webpackChunkName: "vsf-product-tile" */ 'theme/components/core/ProductTile.vue')
   },
   props: {
     products: {
