@@ -61,7 +61,7 @@
           <div class="close-container absolute w-100">
             <i class="material-icons p15 close cl-accent" @click="closeFilters">close</i>
           </div>
-          <lazy-hydrate when-idle>
+          <lazy-hydrate :trigger-hydration="mobileFilters">
             <sidebar class="mobile-filters-body" :filters="getAvailableFilters" @changeFilter="changeFilter" />
           </lazy-hydrate>
           <div class="relative pb20 pt15">
