@@ -12,9 +12,11 @@
             />
           </div>
           <div class="col-xs-12 col-md-5 data">
-            <breadcrumbs
-              class="pt40 pb20 hidden-xs"
-            />
+            <lazy-hydrate when-visible>
+              <breadcrumbs
+                class="pt40 pb20 hidden-xs"
+              />
+            </lazy-hydrate>
             <h1
               class="mb20 mt0 cl-mine-shaft product-name"
               data-testid="productName"
@@ -33,12 +35,14 @@
               {{ $t('SKU: {sku}', { sku: getCurrentProduct.sku }) }}
             </div>
             <div>
-              <product-price
-                class="mb40"
-                v-if="getCurrentProduct.type_id !== 'grouped'"
-                :product="getCurrentProduct"
-                :custom-options="getCurrentCustomOptions"
-              />
+              <lazy-hydrate when-visible>
+                <product-price
+                  class="mb40"
+                  v-if="getCurrentProduct.type_id !== 'grouped'"
+                  :product="getCurrentProduct"
+                  :custom-options="getCurrentCustomOptions"
+                />
+              </lazy-hydrate>
               <div class="cl-primary variants" v-if="getCurrentProduct.type_id =='configurable'">
                 <div
                   class="error"
@@ -55,33 +59,45 @@
                   </div>
                   <div class="row top-xs m0 pt15 pb40 variants-wrapper">
                     <div v-if="option.label == 'Color'">
-                      <color-selector
+                      <lazy-hydrate 
                         v-for="filter in getAvailableFilters[option.attribute_code]"
                         :key="filter.id"
-                        :variant="filter"
-                        :selected-filters="getSelectedFilters"
-                        @change="changeFilter"
-                      />
+                        when-visible
+                      >
+                        <color-selector
+                          :variant="filter"
+                          :selected-filters="getSelectedFilters"
+                          @change="changeFilter"
+                        />
+                      </lazy-hydrate>
                     </div>
                     <div class="sizes" v-else-if="option.label == 'Size'">
-                      <size-selector
-                        class="mr10 mb10"
+                      <lazy-hydrate 
                         v-for="filter in getAvailableFilters[option.attribute_code]"
                         :key="filter.id"
-                        :variant="filter"
-                        :selected-filters="getSelectedFilters"
-                        @change="changeFilter"
-                      />
+                        when-visible
+                      >
+                        <size-selector
+                          class="mr10 mb10"
+                          :variant="filter"
+                          :selected-filters="getSelectedFilters"
+                          @change="changeFilter"
+                        />
+                      </lazy-hydrate>
                     </div>
                     <div :class="option.attribute_code" v-else>
-                      <generic-selector
-                        class="mr10 mb10"
+                      <lazy-hydrate 
                         v-for="filter in getAvailableFilters[option.attribute_code]"
                         :key="filter.id"
-                        :variant="filter"
-                        :selected-filters="getSelectedFilters"
-                        @change="changeFilter"
-                      />
+                        when-visible
+                      >
+                        <generic-selector
+                          class="mr10 mb10"
+                          :variant="filter"
+                          :selected-filters="getSelectedFilters"
+                          @change="changeFilter"
+                        />
+                      </lazy-hydrate>
                     </div>
                     <span
                       v-if="option.label == 'Size'"
@@ -95,42 +111,52 @@
                 </div>
               </div>
             </div>
-            <product-links
-              v-if="getCurrentProduct.type_id =='grouped'"
-              :products="getCurrentProduct.product_links"
-            />
-            <product-bundle-options
-              v-if="getCurrentProduct.bundle_options && getCurrentProduct.bundle_options.length > 0"
-              :product="getCurrentProduct"
-            />
-            <product-custom-options
-              v-else-if="getCurrentProduct.custom_options && getCurrentProduct.custom_options.length > 0"
-              :product="getCurrentProduct"
-            />
-            <product-quantity
-              class="row m0 mb35"
-              v-if="getCurrentProduct.type_id !== 'grouped' && getCurrentProduct.type_id !== 'bundle'"
-              v-model="getCurrentProduct.qty"
-              :max-quantity="maxQuantity"
-              :loading="isStockInfoLoading"
-              :is-simple-or-configurable="isSimpleOrConfigurable"
-              :show-quantity="manageQuantity"
-              :check-max-quantity="manageQuantity"
-              @error="handleQuantityError"
-            />
-            <div class="row m0">
-              <add-to-cart
-                :product="getCurrentProduct"
-                :disabled="isAddToCartDisabled"
-                class="col-xs-12 col-sm-4 col-md-6"
+            <lazy-hydrate when-visible v-if="getCurrentProduct.type_id == 'grouped'">
+              <product-links
+                :products="getCurrentProduct.product_links"
               />
+            </lazy-hydrate>
+            <lazy-hydrate when-visible v-if="getCurrentProduct.bundle_options && getCurrentProduct.bundle_options.length > 0">
+              <product-bundle-options
+                :product="getCurrentProduct"
+              />
+            </lazy-hydrate>
+            <lazy-hydrate when-visible v-else-if="getCurrentProduct.custom_options && getCurrentProduct.custom_options.length > 0">
+              <product-custom-options
+                :product="getCurrentProduct"
+              />
+            </lazy-hydrate>
+            <lazy-hydrate when-visible v-if="getCurrentProduct.type_id !== 'grouped' && getCurrentProduct.type_id !== 'bundle'">
+              <product-quantity
+                class="row m0 mb35"
+                v-model="getCurrentProduct.qty"
+                :max-quantity="maxQuantity"
+                :loading="isStockInfoLoading"
+                :is-simple-or-configurable="isSimpleOrConfigurable"
+                :show-quantity="manageQuantity"
+                :check-max-quantity="manageQuantity"
+                @error="handleQuantityError"
+              />
+            </lazy-hydrate>
+            <div class="row m0">
+              <lazy-hydrate when-visible>
+                <add-to-cart
+                  :product="getCurrentProduct"
+                  :disabled="isAddToCartDisabled"
+                  class="col-xs-12 col-sm-4 col-md-6"
+                />
+              </lazy-hydrate>
             </div>
             <div class="row py40 add-to-buttons">
               <div class="col-xs-6 col-sm-3 col-md-6">
-                <AddToWishlist :product="getCurrentProduct" />
+                <lazy-hydrate when-visible>
+                  <AddToWishlist :product="getCurrentProduct" />
+                </lazy-hydrate>
               </div>
               <div class="col-xs-6 col-sm-3 col-md-6">
-                <AddToCompare :product="getCurrentProduct" />
+                <lazy-hydrate when-visible>
+                  <AddToCompare :product="getCurrentProduct" />
+                </lazy-hydrate>
               </div>
             </div>
           </div>
@@ -148,20 +174,24 @@
           </div>
           <div class="col-xs-12 col-sm-5">
             <ul class="attributes p0 pt5 m0">
-              <product-attribute
+              <lazy-hydrate
                 :key="attr.attribute_code"
                 v-for="attr in getCustomAttributes"
-                :product="getCurrentProduct"
-                :attribute="attr"
-                empty-placeholder="N/A"
-              />
+                when-visible
+              >
+                <product-attribute
+                  :product="getCurrentProduct"
+                  :attribute="attr"
+                  empty-placeholder="N/A"
+                />
+              </lazy-hydrate>
             </ul>
           </div>
-          <div class="details-overlay" @click="showDetails" />
+          <div class="details-overlay" :class="{hidden: detailsOpen}" @click="showDetails" />
         </div>
       </div>
     </section>
-    <lazy-hydrate when-idle>
+    <lazy-hydrate when-visible>
       <reviews
         :product-name="getCurrentProduct.name"
         :product-id="getCurrentProduct.id"
@@ -172,40 +202,33 @@
     <lazy-hydrate when-idle>
       <related-products type="upsell" :heading="$t('We found other products you might like')" />
     </lazy-hydrate>
-    <lazy-hydrate when-idle>
+    <lazy-hydrate when-visible>
       <promoted-offers single-banner />
     </lazy-hydrate>
     <lazy-hydrate when-idle>
       <related-products type="related" />
     </lazy-hydrate>
-    <SizeGuide />
+    <lazy-hydrate when-idle>
+      <SizeGuide />
+    </lazy-hydrate>
     <script v-html="getJsonLd" type="application/ld+json" />
   </div>
 </template>
 
 <script>
-import i18n from '@vue-storefront/i18n'
-import VueOfflineMixin from 'vue-offline/mixin'
 import config from 'config'
 import RelatedProducts from 'theme/components/core/blocks/Product/Related.vue'
 import Reviews from 'theme/components/core/blocks/Reviews/Reviews.vue'
 import AddToCart from 'theme/components/core/AddToCart.vue'
-import GenericSelector from 'theme/components/core/GenericSelector'
 import ColorSelector from 'theme/components/core/ColorSelector.vue'
 import SizeSelector from 'theme/components/core/SizeSelector.vue'
 import Breadcrumbs from 'theme/components/core/Breadcrumbs.vue'
 import ProductAttribute from 'theme/components/core/ProductAttribute.vue'
 import ProductQuantity from 'theme/components/core/ProductQuantity.vue'
-import ProductLinks from 'theme/components/core/ProductLinks.vue'
-import ProductCustomOptions from 'theme/components/core/ProductCustomOptions.vue'
-import ProductBundleOptions from 'theme/components/core/ProductBundleOptions.vue'
 import ProductGallery from 'theme/components/core/ProductGallery'
-import Spinner from 'theme/components/core/Spinner'
 import PromotedOffers from 'theme/components/theme/blocks/PromotedOffers/PromotedOffers'
 import focusClean from 'theme/components/theme/directives/focusClean'
 import WebShare from 'theme/components/theme/WebShare'
-import BaseInputNumber from 'theme/components/core/blocks/Form/BaseInputNumber'
-import SizeGuide from 'theme/components/core/blocks/Product/SizeGuide'
 import AddToWishlist from 'theme/components/core/blocks/Wishlist/AddToWishlist'
 import AddToCompare from 'theme/components/core/blocks/Compare/AddToCompare'
 import { mapGetters } from 'vuex'
@@ -213,16 +236,22 @@ import LazyHydrate from 'vue-lazy-hydration'
 import { ProductOption } from '@vue-storefront/core/modules/catalog/components/ProductOption.ts'
 import { getAvailableFiltersByProduct, getSelectedFiltersByProduct } from '@vue-storefront/core/modules/catalog/helpers/filters'
 import { isOptionAvailableAsync } from '@vue-storefront/core/modules/catalog/helpers/index'
-import { localizedRoute, currentStoreView } from '@vue-storefront/core/lib/multistore'
+import { currentStoreView } from '@vue-storefront/core/lib/multistore'
 import { htmlDecode } from '@vue-storefront/core/filters'
 import { ReviewModule } from '@vue-storefront/core/modules/review'
 import { RecentlyViewedModule } from '@vue-storefront/core/modules/recently-viewed'
-import { registerModule, isModuleRegistered } from '@vue-storefront/core/lib/modules'
+import { registerModule } from '@vue-storefront/core/lib/modules'
 import { onlineHelper, isServer, productJsonLd } from '@vue-storefront/core/helpers'
 import { catalogHooksExecutors } from '@vue-storefront/core/modules/catalog-next/hooks'
 import ProductPrice from 'theme/components/core/ProductPrice.vue'
 import { doPlatformPricesSync } from '@vue-storefront/core/modules/catalog/helpers'
 import { filterChangedProduct } from '@vue-storefront/core/modules/catalog/events'
+
+const GenericSelector = () => import(/* webpackChunkName: "vsf-generic-selector" */ 'theme/components/core/GenericSelector')
+const ProductLinks = () => import(/* webpackChunkName: "vsf-product-links" */ 'theme/components/core/ProductLinks.vue')
+const ProductCustomOptions = () => import(/* webpackChunkName: "vsf-product-custom-opt" */ 'theme/components/core/ProductCustomOptions.vue')
+const ProductBundleOptions = () => import(/* webpackChunkName: "vsf-product-bundle-opt" */ 'theme/components/core/ProductBundleOptions.vue')
+const SizeGuide = () => import(/* webpackChunkName: "vsf-size-guide" */ 'theme/components/core/blocks/Product/SizeGuide')
 
 export default {
   components: {
@@ -359,7 +388,12 @@ export default {
   methods: {
     showDetails (event) {
       this.detailsOpen = true
-      event.target.classList.add('hidden')
+    },
+    openSizeGuide () {
+      this.$bus.$emit('modal-show', 'modal-sizeguide');
+    },
+    handleQuantityError (error) {
+      this.quantityError = error
     },
     notifyOutStock () {
       this.$store.dispatch('notification/spawnNotification', {
@@ -384,9 +418,6 @@ export default {
       await filterChangedProduct(selectedConfiguration, this.$store, this.$router)
       this.getQuantity()
     },
-    openSizeGuide () {
-      this.$bus.$emit('modal-show', 'modal-sizeguide')
-    },
     isOptionAvailable (option) { // check if the option is available
       const currentConfig = Object.assign({}, this.getCurrentProductConfiguration)
       currentConfig[option.type] = option
@@ -409,9 +440,6 @@ export default {
       } finally {
         this.isStockInfoLoading = false
       }
-    },
-    handleQuantityError (error) {
-      this.quantityError = error
     }
   },
   metaInfo () {

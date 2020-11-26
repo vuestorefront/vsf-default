@@ -1,4 +1,4 @@
-<template>
+<template functional>
   <div class="loader-container absolute">
     <div class="loader-inner-container absolute">
       <div class="spinner relative">

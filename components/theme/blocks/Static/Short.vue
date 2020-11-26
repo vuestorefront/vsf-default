@@ -1,4 +1,4 @@
-<template>
+<template functional>
   <div>
     <p>
       This website ("website") is operated by Luma Inc., which includes Luma stores, and Luma Private Sales. This privacy policy only covers information collected at this website, and does not cover any information collected offline by Luma. All Luma websites are covered by this privacy policy.
