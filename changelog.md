@@ -26,6 +26,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Refactor of some parts of views
 - Loading `homepage` vuex module only when needed (on 2 views)
 - Functional LoaderScoped.vue
+- Only one way of showing product's prices in the cart. `displayItemDiscounts` is not being used anymore
 
 ## [1.12.2] - UNRELEASED
 
