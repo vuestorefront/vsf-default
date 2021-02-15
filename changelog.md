@@ -16,11 +16,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Get rid of banners & headimage jsons
 - Separated MainHeader to two components & lazy loading them
 - Lazy loading overlay component
-- Lazy loadig Notification component
+- Lazy loading Notification component
 - Lazy loading Auth components in the Auth Modal
 - Offline badge in a separate bundle
 - Lazy load language switcher
 - Lazy load loader in default layout
+- Added `VueObserveVisibility` dependency
 ### Changed
 - Updated Vuex to 3.5.1
 - Refactor of some parts of views
