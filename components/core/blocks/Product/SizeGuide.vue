@@ -16,20 +16,9 @@ import SizeGuideContent from 'theme/components/theme/blocks/Static/Example'
 
 export default {
   name: 'SizeGuide',
-  computed: {
-    ...mapState({
-      activeElem: state => state.ui.authElem
-    })
-  },
   components: {
     Modal,
     SizeGuideContent
-  },
-  methods: {
-    close (e) {
-      if (e) localStorage.removeItem('redirect')
-      this.$bus.$emit('modal-hide', 'modal-sizeguide')
-    }
   }
 }
 </script>

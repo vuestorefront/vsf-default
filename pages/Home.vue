@@ -1,7 +1,9 @@
 <template>
   <div id="home">
-    <head-image />
-
+    <head-image 
+      :currentImage="currentImage"
+      :supportsWebp="supportsWebp"
+    />
     <promoted-offers />
 
     <section class="new-collection container px15">
@@ -12,8 +14,8 @@
           </h2>
         </header>
       </div>
-      <div class="row center-xs">
-        <lazy-hydrate :trigger-hydration="!loading" v-if="isLazyHydrateEnabled">
+      <div class="row center-xs" v-observe-visibility="newCollectionLazyVisibility(fetchNewCollection)">
+        <lazy-hydrate :trigger-hydration="newCollectionLoaded" v-if="isLazyHydrateEnabled">
           <product-listing columns="4" :products="getEverythingNewCollection" />
         </lazy-hydrate>
         <product-listing v-else columns="4" :products="getEverythingNewCollection" />
@@ -28,9 +30,10 @@
           </h2>
         </header>
       </div>
-      <tile-links />
+      <lazy-hydrate when-idle>
+        <tile-links />
+      </lazy-hydrate>
     </section>
-    <Onboard />
   </div>
 </template>
 
@@ -43,29 +46,52 @@ import LazyHydrate from 'vue-lazy-hydration'
 import ProductListing from 'theme/components/core/ProductListing'
 import HeadImage from 'theme/components/core/blocks/MainSlider/HeadImage'
 // Theme local components
-import Onboard from 'theme/components/theme/blocks/Home/Onboard'
 import PromotedOffers from 'theme/components/theme/blocks/PromotedOffers/PromotedOffers'
 import TileLinks from 'theme/components/theme/blocks/TileLinks/TileLinks'
 import { Logger } from '@vue-storefront/core/lib/logger'
-import { mapGetters } from 'vuex'
+import { mapGetters, mapActions } from 'vuex'
 import config from 'config'
 import { registerModule } from '@vue-storefront/core/lib/modules'
 import { RecentlyViewedModule } from '@vue-storefront/core/modules/recently-viewed'
+import createLazyVisibility from '@vue-storefront/core/mixins/createLazyVisibility'
+import { currentStoreView } from '@vue-storefront/core/lib/multistore'
+import { homepageStore } from 'theme/store/homepage'
+
+const image = {
+  webp: "/assets/full_width_banner.webp",
+  fallback: "/assets/full_width_banner.jpg"
+}
+
+const headImage = {
+  de: {
+    title: "Neue Wege beschreiten.",
+    subtitle: "Eine Mode kann sich zu einem neuen Stil durchsetzen und offenbart die neusten Kreationen von Designern, Technologen, Ingenieuren und Designmanagern.",
+    link: "/women/frauen-20",
+    image
+  },
+  it: {
+    title: "Cammina la passeggiata.",
+    subtitle: "Una moda può diventare lo stile prevalente nel comportamento o manifestare le ultime creazioni di designer, tecnologi, ingegneri e responsabili del design.",
+    link: "/women/la-donne-20",
+    image
+  },
+  default: {
+    title: "Walk the walk.",
+    subtitle: "A fashion can become the prevailing style in behaviour or manifest the newest creations of designers, technologists, engineers, and design managers.",
+    link: "/women.html",
+    image
+  }
+}
 
 export default {
-  data () {
-    return {
-      loading: true
-    }
-  },
   components: {
     HeadImage,
-    Onboard,
     ProductListing,
     PromotedOffers,
     TileLinks,
     LazyHydrate
   },
+  mixins: [createLazyVisibility({ scope: 'newCollection' })],
   computed: {
     ...mapGetters('user', ['isLoggedIn']),
     ...mapGetters('homepage', ['getEverythingNewCollection']),
@@ -79,16 +105,32 @@ export default {
       return config.ssr.lazyHydrateFor.some(
         field => ['homepage', 'homepage.new_collection'].includes(field)
       )
+    },
+    newCollectionLoaded () {
+      return this.newCollectionLazyVisibilityMetadata.loaded
+    },
+    currentImage () {
+      const { storeCode } = currentStoreView()
+      
+      return headImage[storeCode] || headImage.default
+    },
+    supportsWebp () {
+      return this.$store.state.ui.supportsWebp
     }
+  },
+  methods: {
+    ...mapActions('homepage', ['fetchNewCollection'])
   },
   beforeCreate () {
     registerModule(RecentlyViewedModule)
+    if (!this.$store.hasModule('homepage')) {
+      this.$store.registerModule('homepage', homepageStore);
+    }
   },
   async beforeMount () {
     if (this.$store.state.__DEMO_MODE__) {
       const onboardingClaim = await this.$store.dispatch('claims/check', { claimCode: 'onboardingAccepted' })
       if (!onboardingClaim) { // show onboarding info
-        this.$bus.$emit('modal-toggle', 'modal-onboard')
         this.$store.dispatch('claims/set', { claimCode: 'onboardingAccepted', value: true })
       }
     }
@@ -106,23 +148,13 @@ export default {
   async asyncData ({ store, route, context }) { // this is for SSR purposes to prefetch data
     if (context) context.output.cacheTags.add(`home`)
     Logger.info('Calling asyncData in Home Page (core)')()
+    if (!store.hasModule('homepage')) {
+      store.registerModule('homepage', homepageStore);
+    }
 
     await Promise.all([
-      store.dispatch('homepage/fetchNewCollection'),
-      store.dispatch('promoted/updateHeadImage'),
-      store.dispatch('promoted/updatePromotedOffers')
+      store.dispatch('homepage/fetchNewCollection')
     ])
-  },
-  beforeRouteEnter (to, from, next) {
-    if (!isServer && !from.name) { // Loading products to cache on SSR render
-      next(vm =>
-        vm.$store.dispatch('homepage/fetchNewCollection').then(res => {
-          vm.loading = false
-        })
-      )
-    } else {
-      next()
-    }
   },
   metaInfo () {
     return {

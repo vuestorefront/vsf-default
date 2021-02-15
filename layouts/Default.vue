@@ -1,7 +1,10 @@
 <template>
   <div class="default-layout">
     <overlay v-if="overlayActive" />
-    <loader />
+    <loader 
+      v-if="$store.state.ui.loader"
+      :message="loaderMessage"
+    />
     <div id="viewport" class="w-100 relative">
       <main-header />
       <async-sidebar
@@ -26,11 +29,24 @@
         @close="$store.commit('ui/setWishlist')"
       />
       <slot />
-      <main-footer />
-      <notification />
-      <sign-up />
-      <cookie-notification />
-      <offline-badge />
+      <lazy-hydrate when-visible>
+        <main-footer />
+      </lazy-hydrate>
+
+      <notification v-if="notifications"/>
+
+      <lazy-hydrate when-idle>
+        <sign-up />
+      </lazy-hydrate>
+
+      <lazy-hydrate when-idle>
+        <cookie-notification />
+      </lazy-hydrate>
+
+      <lazy-hydrate when-idle>
+        <offline-badge />
+      </lazy-hydrate>
+      
       <order-confirmation :orders-data="ordersData" v-if="loadOrderConfirmation" />
     </div>
     <vue-progress-bar />
@@ -42,27 +58,30 @@ import { mapState } from 'vuex'
 import AsyncSidebar from 'theme/components/theme/blocks/AsyncSidebar/AsyncSidebar.vue'
 import MainHeader from 'theme/components/core/blocks/Header/Header.vue'
 import MainFooter from 'theme/components/core/blocks/Footer/Footer.vue'
-import Overlay from 'theme/components/core/Overlay.vue'
-import Loader from 'theme/components/core/Loader.vue'
-import Notification from 'theme/components/core/Notification.vue'
 import SignUp from 'theme/components/core/blocks/Auth/SignUp.vue'
 import CookieNotification from 'theme/components/core/CookieNotification.vue'
-import OfflineBadge from 'theme/components/core/OfflineBadge.vue'
 import { isServer } from '@vue-storefront/core/helpers'
 import Head from 'theme/head'
 import config from 'config'
+import { supportWebp } from 'theme/helpers'
+import LazyHydrate from 'vue-lazy-hydration'
 
 const SidebarMenu = () => import(/* webpackPreload: true */ /* webpackChunkName: "vsf-sidebar-menu" */ 'theme/components/core/blocks/SidebarMenu/SidebarMenu.vue')
 const Microcart = () => import(/* webpackPreload: true */ /* webpackChunkName: "vsf-microcart" */ 'theme/components/core/blocks/Microcart/Microcart.vue')
 const Wishlist = () => import(/* webpackPreload: true */ /* webpackChunkName: "vsf-wishlist" */ 'theme/components/core/blocks/Wishlist/Wishlist.vue')
+const Notification = () => import(/* webpackPreload: true */ /* webpackChunkName: "vsf-notification" */ 'theme/components/core/Notification.vue')
+const OfflineBadge = () => import(/* webpackPreload: true */ /* webpackChunkName: "vsf-offline-badge" */ 'theme/components/core/OfflineBadge.vue')
 const SearchPanel = () => import(/* webpackChunkName: "vsf-search-panel" */ 'theme/components/core/blocks/SearchPanel/SearchPanel.vue')
+const Overlay = () => import(/* webpackChunkName: "vsf-overlay" */ 'theme/components/core/Overlay.vue')
 const OrderConfirmation = () => import(/* webpackChunkName: "vsf-order-confirmation" */ 'theme/components/core/blocks/Checkout/OrderConfirmation.vue')
+const Loader = () => import(/* webpackChunkName: "vsf-loader" */ 'theme/components/core/Loader.vue')
 
 export default {
   data () {
     return {
       loadOrderConfirmation: false,
       ordersData: [],
+      loaderMessage: null,
       Microcart,
       Wishlist,
       SearchPanel,
@@ -76,7 +95,10 @@ export default {
       isSidebarOpen: state => state.ui.sidebar,
       isMicrocartOpen: state => state.ui.microcart,
       isWishlistOpen: state => state.ui.wishlist
-    })
+    }),
+    notifications () {
+      return this.$store.getters['notification/notifications']
+    }
   },
   methods: {
     onOrderConfirmation (payload) {
@@ -107,6 +129,22 @@ export default {
       this.$Progress.finish()
     })
     this.$bus.$on('offline-order-confirmation', this.onOrderConfirmation)
+
+    this.$store.commit('ui/setSupportsWebp', supportWebp())
+
+    const show = (message = null) => {
+      this.loaderMessage = message
+      this.$store.commit('ui/setLoader', true)
+    }
+    const hide = () => {
+      this.$store.commit('ui/setLoader', false)
+    }
+    this.$bus.$on('notification-progress-start', show)
+    this.$bus.$on('notification-progress-stop', hide)
+    this.$on('hook:beforeDestroy', () => {
+      this.$bus.$off('notification-progress-start', show)
+      this.$bus.$off('notification-progress-stop', hide)
+    })
   },
   beforeDestroy () {
     this.$bus.$off('offline-order-confirmation', this.onOrderConfirmation)
@@ -123,7 +161,8 @@ export default {
     CookieNotification,
     OfflineBadge,
     OrderConfirmation,
-    AsyncSidebar
+    AsyncSidebar,
+    LazyHydrate
   }
 }
 </script>

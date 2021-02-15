@@ -72,14 +72,13 @@
 <script>
 import Compare from '@vue-storefront/core/pages/Compare'
 import Breadcrumbs from '../components/core/Breadcrumbs'
-import ProductTile from '../components/core/ProductTile'
 import ProductAttribute from '../components/core/blocks/Compare/ProductAttribute'
 import i18n from '@vue-storefront/i18n'
 
 export default {
   components: {
     Breadcrumbs,
-    ProductTile,
+    ProductTile: () => import(/* webpackChunkName: "vsf-product-tile" */ 'theme/components/core/ProductTile.vue'),
     ProductAttribute
   },
   mixins: [Compare],

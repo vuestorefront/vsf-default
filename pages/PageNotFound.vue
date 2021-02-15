@@ -53,16 +53,24 @@
 <script>
 import { mapGetters } from 'vuex'
 import { Logger } from '@vue-storefront/core/lib/logger'
-import i18n from '@vue-storefront/i18n'
+import { homepageStore } from 'theme/store/homepage'
 import LazyHydrate from 'vue-lazy-hydration'
-import ProductTile from '../components/core/ProductTile.vue'
 
 export default {
   name: 'PageNotFound',
+  components: {
+    ProductTile: () => import(/* webpackChunkName: "vsf-product-tile" */ 'theme/components/core/ProductTile.vue'),
+    LazyHydrate
+  },
   computed: {
     ...mapGetters({
       ourBestsellersCollection: 'homepage/getBestsellers'
     })
+  },
+  beforeCreate () {
+    if (!this.$store.hasModule('homepage')) {
+      this.$store.registerModule('homepage', homepageStore);
+    }
   },
   async asyncData ({ store, route, context }) {
     Logger.log('Entering asyncData for PageNotFound ' + new Date())()
@@ -70,18 +78,17 @@ export default {
       context.output.cacheTags.add(`page-not-found`)
       context.server.response.statusCode = 404
     }
+    if (!store.hasModule('homepage')) {
+      store.registerModule('homepage', homepageStore);
+    }
 
     await store.dispatch('homepage/loadBestsellers')
   },
   metaInfo () {
     return {
-      title: this.$route.meta.title || i18n.t('404 Page Not Found'),
+      title: this.$route.meta.title || this.$i18n.t('404 Page Not Found'),
       meta: this.$route.meta.description ? [{ vmid: 'description', name: 'description', content: this.$route.meta.description }] : []
     }
-  },
-  components: {
-    ProductTile,
-    LazyHydrate
   },
   methods: {
     toggleSearchpanel () {

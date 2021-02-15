@@ -9,9 +9,6 @@
 <script>
 import { mapState } from 'vuex'
 import Modal from 'theme/components/core/Modal'
-import Login from 'theme/components/core/blocks/Auth/Login'
-import Register from 'theme/components/core/blocks/Auth/Register'
-import ForgotPass from 'theme/components/core/blocks/Auth/ForgotPass'
 
 export default {
   name: 'SignUp',
@@ -22,9 +19,9 @@ export default {
   },
   components: {
     Modal,
-    Login,
-    Register,
-    ForgotPass
+    Login: () => import(/* webpackChunkName: "modal-auth-login" */ 'theme/components/core/blocks/Auth/Login'),
+    Register: () => import(/* webpackChunkName: "modal-auth-register" */ 'theme/components/core/blocks/Auth/Register'),
+    ForgotPass: () => import(/* webpackChunkName: "modal-auth-forgot-pass" */ 'theme/components/core/blocks/Auth/ForgotPass')
   }
 }
 </script>
