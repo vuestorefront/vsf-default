@@ -330,7 +330,7 @@
 
 <script>
 import { required, minLength } from 'vuelidate/lib/validators'
-import { unicodeAlpha, unicodeAlphaNum, phoneNum } from '@vue-storefront/core/helpers/validators'
+import { unicodeAlpha, unicodeAlphaNum } from '@vue-storefront/core/helpers/validators'
 import { Payment } from '@vue-storefront/core/modules/checkout/components/Payment'
 
 import BaseCheckbox from 'theme/components/core/blocks/Form/BaseCheckbox'
@@ -376,7 +376,7 @@ export default {
           },
           phoneNumber: {
             required,
-            phoneNum
+            unicodeAlphaNum
           },
           streetAddress: {
             required,
@@ -425,7 +425,7 @@ export default {
           },
           phoneNumber: {
             required,
-            phoneNum
+            unicodeAlphaNum
           },
           streetAddress: {
             required,

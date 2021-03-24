@@ -270,7 +270,7 @@
 
 <script>
 import { required, minLength } from 'vuelidate/lib/validators'
-import { unicodeAlpha, unicodeAlphaNum, phoneNum } from '@vue-storefront/core/helpers/validators'
+import { unicodeAlpha, unicodeAlphaNum } from '@vue-storefront/core/helpers/validators'
 import { Shipping } from '@vue-storefront/core/modules/checkout/components/Shipping'
 import { currentStoreView } from '@vue-storefront/core/lib/multistore'
 
@@ -317,8 +317,8 @@ export default {
         required
       },
       phoneNumber: {
-        required, 
-        phoneNum
+        required,
+        unicodeAlphaNum
       },
       streetAddress: {
         required,
