@@ -44,3 +44,4 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed / Improved
 - Fixed closing sidebar after clicking on go to checkout button (#28)
+- Used helper for calculating product prices in Cart/Checkout
