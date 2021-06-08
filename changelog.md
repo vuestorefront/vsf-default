@@ -27,6 +27,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Refactor of some parts of views
 - Loading `homepage` vuex module only when needed (on 2 views)
 - Functional LoaderScoped.vue
+- Used helper for calculating product prices in Cart/Checkout
 
 ## [1.12.2] - UNRELEASED
 
@@ -44,4 +45,3 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed / Improved
 - Fixed closing sidebar after clicking on go to checkout button (#28)
-- Used helper for calculating product prices in Cart/Checkout
