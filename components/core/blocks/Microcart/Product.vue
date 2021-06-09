@@ -60,30 +60,14 @@
           />
         </div>
         <div class="flex mr10 align-right start-xs between-sm prices">
-          <div class="prices" v-if="!displayItemDiscounts || !isOnline">
-            <span class="h4 serif cl-error price-special" v-if="product.special_price">
+          <div class="prices">
+            <span class="h4 serif cl-error price-special" v-if="productPrice.special">
               {{ productPrice.special | price(storeView) }}
             </span>
-            <span class="h6 serif price-original" v-if="product.special_price">
+            <span class="h6 serif price-original" v-if="productPrice.original">
               {{ productPrice.original | price(storeView) }}
             </span>
-            <span class="h4 serif price-regular" v-else data-testid="productPrice">
-              {{ productPrice.regular | price(storeView) }}
-            </span>
-          </div>
-          <div class="prices" v-else-if="isOnline && product.totals">
-            <span class="h4 serif cl-error price-special" v-if="product.totals.discount_amount">
-              {{ productPrice.special | price(storeView) }}
-            </span>
-            <span class="h6 serif price-original" v-if="product.totals.discount_amount">
-              {{ productPrice.original | price(storeView) }}
-            </span>
-            <span class="h4 serif price-regular" v-if="!product.totals.discount_amount">
-              {{ productPrice.regular | price(storeView) }}
-            </span>
-          </div>
-          <div class="prices" v-else>
-            <span class="h4 serif price-regular">
+            <span class="h4 serif price-regular" v-if="productPrice.regular" data-testid="productPrice">
               {{ productPrice.regular | price(storeView) }}
             </span>
           </div>
